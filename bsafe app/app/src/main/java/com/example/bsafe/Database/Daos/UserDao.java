@@ -12,8 +12,11 @@ import java.util.List;
 
 @Dao
 public interface UserDao {
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM users")
     List<User> getAll();
+
+    @Query("SELECT * FROM users WHERE uid = :uid")
+    void getUserById(Integer uid);
 
     @Insert
     void insertAll(User... users);

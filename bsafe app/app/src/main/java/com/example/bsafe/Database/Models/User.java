@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 /**
  * This class is entirely just for testing the db library
  */
-@Entity
+@Entity(tableName="users")
 public class User {
     @PrimaryKey
     public int uid;
