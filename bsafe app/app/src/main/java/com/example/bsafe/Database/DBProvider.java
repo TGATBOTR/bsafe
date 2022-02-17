@@ -13,6 +13,9 @@ public abstract class DBProvider {
 
     private static final String database_name = "main.db";
 
+    public DBProvider() throws NoSuchMethodException {
+        throw new NoSuchMethodException();
+    }
 
     /**
      * Set the database up
