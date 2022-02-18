@@ -3,6 +3,7 @@ package com.example.bsafe.Database;
 import android.content.Context;
 
 import com.example.bsafe.Database.DB;
+import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Daos.UserDao;
 
 import androidx.room.Room;
@@ -25,12 +26,18 @@ public class DatabaseModule {
                 context.getApplicationContext(),
                 DB.class,
                 "allergies"
-        ).build();
+        ).fallbackToDestructiveMigration().build();
     }
 
     @Provides
     @Singleton
     public UserDao provideUserDAO(DB database) {
         return database.userDao();
+    }
+
+    @Provides
+    @Singleton
+    public AllergyDao provideAllergyDAO(DB database) {
+        return database.allergyDao();
     }
 }

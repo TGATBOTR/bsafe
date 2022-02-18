@@ -11,12 +11,13 @@ import com.example.bsafe.Database.Models.User;
 
 import java.util.List;
 
+@Dao
 public interface AllergyDao {
     @Query("SELECT * FROM allergies")
     List<Allergy> getAll();
 
-    @Query("SELECT * FROM allergies WHERE user_id = :uid")
-    void getUserAllergies(Integer user_id);
+    @Query("SELECT * FROM allergies WHERE user_id = :user_id")
+    List<Allergy> getUserAllergies(Integer user_id);
 
     @Insert
     void insertAll(Allergy... allergies);
