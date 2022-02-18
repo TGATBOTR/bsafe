@@ -10,14 +10,7 @@ import androidx.room.PrimaryKey;
  * Represents an allergy of a user
  */
 @Entity(
-        tableName = "allergies",
-        foreignKeys = {
-                @ForeignKey(entity = User::class,
-                        parentColumns = "uid",
-                        childColumns = "user_id",
-                        onDelete = ForeignKey.CASCADE // Delete child allergies when user is deleted
-                )
-        }
+        tableName = "allergies"
 )
 public class Allergy {
     @PrimaryKey

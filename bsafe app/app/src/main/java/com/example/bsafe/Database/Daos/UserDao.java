@@ -15,15 +15,14 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     List<User> getAll();
 
-    @Query("SELECT * FROM users WHERE uid = :uid")
-    void getUserById(Integer uid);
+    @Query("SELECT * FROM users WHERE uid = :uid LIMIT 1")
+    User getUserById(Integer uid);
 
     @Insert
     void insertAll(User... users);
 
     @Update
     public void updateUsers(User... users);
-
 
     @Delete
     void delete(User user);

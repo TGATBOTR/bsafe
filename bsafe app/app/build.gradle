@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -43,6 +44,16 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
+    implementation 'com.google.dagger:hilt-android:2.41'
+    annotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+
+    // For instrumentation tests
+    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.41'
+    androidTestAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
+
+    // For local unit tests
+    testImplementation 'com.google.dagger:hilt-android-testing:2.41'
+    testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
 
 
 
