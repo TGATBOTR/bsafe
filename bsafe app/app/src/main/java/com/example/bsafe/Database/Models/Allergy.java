@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey;
         tableName = "allergies"
 )
 public class Allergy {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int uid;
 
     @ColumnInfo(name = "name")
