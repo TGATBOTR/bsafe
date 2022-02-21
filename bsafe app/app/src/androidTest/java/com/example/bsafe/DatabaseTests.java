@@ -32,7 +32,8 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class DatabaseTests {
     private TestContexts context = new TestContexts();
-
+    private Session session;
+    private User user;
     private UserDao userDao;
     private AllergyDao allergyDao;
     private DB db;
@@ -43,10 +44,12 @@ public class DatabaseTests {
     @Before
     public void createDb()
     {
-        Context context = ApplicationProvider.getApplicationContext();
-        db = Room.inMemoryDatabaseBuilder(context, DB.class).build();
+        Context appContext = ApplicationProvider.getApplicationContext();
+        db = Room.inMemoryDatabaseBuilder(appContext, DB.class).build();
         userDao = db.userDao();
         allergyDao = db.allergyDao();
+        session = this.context.createSession();
+        user = session.getUser();
     }
 
     /**
@@ -61,9 +64,7 @@ public class DatabaseTests {
     @Test
     public void createAndReadUser()
     {
-        Session session = context.createUserAndSession();
-        User user = session.getUser();
-        context.addNewUserToDb(user);
+        context.addUserToDb(user);
 
         User _user = context.readLastUserFromDb();
         assertEquals(user.uid, _user.uid);
@@ -72,13 +73,39 @@ public class DatabaseTests {
     }
 
     @Test
+    public void readAndUpdateUser()
+    {
+        context.addUserToDb(user);
+
+        // Update fields
+        user.firstName = "New_name";
+        user.lastName = "New_lastname";
+        userDao.updateUsers(user);
+
+        User _user = context.readLastUserFromDb();
+        assertEquals(user.uid, _user.uid);
+        assertEquals(user.firstName, _user.firstName);
+        assertEquals(user.lastName, _user.lastName);
+    }
+
+    @Test
+    public void readAndDeleteUser()
+    {
+        context.addUserToDb(user);
+
+        userDao.delete(user);
+
+        List<User> users = userDao.getAll();
+        assertEquals(0, users.size());
+    }
+
+    @Test
     public void createAndReadAllergy()
     {
-        Session session = context.createUserAndSession();
-        context.addNewUserToDb(session.getUser());
-        Allergy allergy = context.addNewAllergyToDb(session.getUser());
+        context.addUserToDb(user);
+        Allergy allergy = context.addNewAllergyToDb(user);
 
-        Allergy _allergy = context.readLastAllergyFromDb();
+        Allergy _allergy = context.readLastAllergyFromDb(user);
         assertEquals(allergy.uid, _allergy.uid);
         assertEquals(allergy.name, _allergy.name);
         assertEquals(allergy.scale, _allergy.scale);
@@ -86,20 +113,18 @@ public class DatabaseTests {
     }
 
     @Test
-    public void updateAndReadAllergy()
+    public void readAndUpdateAllergy()
     {
-        Session session = context.createUserAndSession();
-        context.addNewUserToDb(session.getUser());
-        context.addNewAllergyToDb(session.getUser());
+        context.addUserToDb(user);
+        Allergy allergy = context.addNewAllergyToDb(user);
 
         // Update fields
-        Allergy allergy = context.readLastAllergyFromDb();
         allergy.name = "rugs";
         allergy.scale = 4;
         allergy.symptoms = "acute organ hemorrhage";
         allergyDao.updateAll(allergy);
 
-        Allergy _allergy = context.readLastAllergyFromDb();
+        Allergy _allergy = context.readLastAllergyFromDb(user);
         assertEquals(allergy.uid, _allergy.uid);
         assertEquals(allergy.name, _allergy.name);
         assertEquals(allergy.scale, _allergy.scale);
@@ -109,20 +134,19 @@ public class DatabaseTests {
     @Test
     public void readAndDeleteAllergy()
     {
-        Session session = context.createUserAndSession();
-        context.addNewUserToDb(session.getUser());
-        context.addNewAllergyToDb(session.getUser());
+        context.addUserToDb(user);
+        context.addNewAllergyToDb(user);
 
-        Allergy allergy = context.readLastAllergyFromDb();
+        Allergy allergy = context.readLastAllergyFromDb(user);
         allergyDao.delete(allergy);
 
-        List<Allergy> allergies = allergyDao.getUserAllergies(session.getUser().uid);
+        List<Allergy> allergies = allergyDao.getAll();
         assertEquals(0, allergies.size());
     }
 
     private class TestContexts
     {
-        public Session createUserAndSession()
+        public Session createSession()
         {
             User user = new User();
             user.firstName = "First_name";
@@ -134,7 +158,7 @@ public class DatabaseTests {
             return session;
         }
 
-        public void addNewUserToDb(User user)
+        public void addUserToDb(User user)
         {
             userDao.insertAll(user);
         }
@@ -162,9 +186,9 @@ public class DatabaseTests {
             return allergy;
         }
 
-        public Allergy readLastAllergyFromDb()
+        public Allergy readLastAllergyFromDb(User user)
         {
-            List<Allergy> allergies = allergyDao.getAll();
+            List<Allergy> allergies = allergyDao.getUserAllergies(user.uid);
             assert(allergies.size() > 0);
             Allergy allergy = allergies.get(allergies.size() - 1);
             assertNotNull(allergy);
