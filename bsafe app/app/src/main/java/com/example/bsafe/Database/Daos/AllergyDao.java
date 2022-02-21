@@ -23,7 +23,7 @@ public interface AllergyDao {
     void insertAll(Allergy... allergies);
 
     @Update
-    public void updateUsers(Allergy... allergies);
+    public void updateAll(Allergy... allergies);
 
     @Delete
     void delete(Allergy allergy);
