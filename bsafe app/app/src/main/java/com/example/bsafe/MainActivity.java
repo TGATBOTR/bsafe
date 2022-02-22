@@ -44,17 +44,11 @@ public class MainActivity extends AppCompatActivity {
         Thread t = new Thread() {
             public void run() {
                 allergies = allergyDao.getUserAllergies(currentUser.uid);
-                retrieved = true;
             }
         };
         t.start();
+        try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
-        while (!retrieved){
-        }
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-        findViewById(R.id.relativeLayout).setVisibility(View.VISIBLE);
-        findViewById(R.id.right).setVisibility(View.VISIBLE);
-        findViewById(R.id.left).setVisibility(View.VISIBLE);
         setAllergyText();
     }
 
@@ -69,19 +63,26 @@ public class MainActivity extends AppCompatActivity {
         }
         if (allergies.size() != 0) {
             currentAllergy += shift;
-            currentAllergy = currentAllergy % allergies.size();
+            if (currentAllergy < 0){
+                currentAllergy+=allergies.size();
+            }
+            if (currentAllergy > allergies.size()-1){
+                currentAllergy-=allergies.size();
+            }
             setAllergyText();
         }
     }
 
     // UPDATE TEXT ON SCREEN
     // will change to swipe gesture, may not need
+    //TODO:ADD TRANSLATED TEXT
     private void setAllergyText(){
         String text;
         if(allergies.size() != 0){
             text = allergies.get(currentAllergy).name;
         } else {
-            text = "none";
+            text = "ADD AN ALLERGY!";
+
         }
         englishAllergyName.setText(text);
     }
@@ -90,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
     public void addAllergy(View view) {
         Intent i=new Intent(getBaseContext(),AddAllergyActivity.class);
         finish();
+        startActivity(i);
+    }
+
+    //GO TO VIEW ALL ALLERGIES PAGE
+    public void showAll(View view) {
+        Intent i=new Intent(getBaseContext(),ViewAllergies.class);
         startActivity(i);
     }
 }
