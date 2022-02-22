@@ -79,7 +79,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
 
         Thread t = new Thread() {
             public void run() {
-                allergyDao.updateUsers(newAllergy);
+                allergyDao.updateAll(newAllergy);
             }
         };
         t.start();
