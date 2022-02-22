@@ -1,17 +1,15 @@
 package com.example.bsafe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,9 +50,7 @@ public class AddAllergyActivity extends AppCompatActivity {
         allergy.attachToUser(session.getUser());
         allergy.symptoms = allergySymptoms.getText().toString();
 
-        // TODO: INSERT INTO DB
-
-
+        // INSERT INTO DB
         Thread t = new Thread() {
             public void run() {
                 allergyDao.insertAll(allergy);
@@ -67,6 +63,7 @@ public class AddAllergyActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //GO BACK TO HOME PAGE
         Intent i=new Intent(getBaseContext(),MainActivity.class);
         finish();
         startActivity(i);
