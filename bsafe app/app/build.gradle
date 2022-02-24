@@ -55,6 +55,8 @@ dependencies {
     testImplementation 'com.google.dagger:hilt-android-testing:2.41'
     testAnnotationProcessor 'com.google.dagger:hilt-compiler:2.41'
 
-
+    //For QR Generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
+    implementation 'com.google.zxing:core:3.3.2'
 
 }

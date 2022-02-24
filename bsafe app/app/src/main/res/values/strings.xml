@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">bSafe</string>
+    <string name="qr_code">QR code</string>
 </resources>
