@@ -20,7 +20,7 @@ public class QRGenerator extends AppCompatActivity {
         setContentView(R.layout.activity_view_qr_code);
 
         qrImage = findViewById(R.id.qrContainer);
-        qrValue = "Hello, my name is Dario";
+        qrValue = "I am allergic to Luca";
 
         QRGEncoder qrgEncoder = new QRGEncoder(qrValue, null, QRGContents.Type.TEXT,500);
         try {
