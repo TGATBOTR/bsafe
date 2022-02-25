@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/giova/Documents/GitHub/bsafe/bsafe app/app/src/main/res/layout/activity_add_allergy.xml" value="0.1453125" />
+        <entry key="..\:/Users/giova/Documents/GitHub/bsafe/bsafe app/app/src/main/res/layout/activity_home.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/giova/Documents/GitHub/bsafe/bsafe app/app/src/main/res/layout/activity_view_allergies.xml" value="0.1" />
+        <entry key="..\:/Users/giova/Documents/GitHub/bsafe/bsafe app/app/src/main/res/layout/activity_view_languages.xml" value="0.1453125" />
+        <entry key="..\:/Users/giova/Documents/GitHub/bsafe/bsafe app/app/src/main/res/layout/activity_view_qr_code.xml" value="0.1453125" />
         <entry key="app/src/main/res/layout/activity_add_allergy.xml" value="0.42617753623188404" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.559375" />

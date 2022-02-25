@@ -17,32 +17,32 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:gravity="center"
             android:text="English:" />
 
         <TextView
             android:id="@+id/textView3"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/textView2" />
+            android:layout_below="@+id/textView2"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/textView4"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_below="@+id/textView3"
+            android:gravity="center"
             android:text="French:" />
 
         <TextView
             android:id="@+id/textView5"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@+id/textView4" />
+            android:layout_below="@+id/textView4"
+            android:gravity="center" />
     </RelativeLayout>
 
     <ImageButton
@@ -78,17 +78,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/add" />
 
+
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:onClick="showAll"
         android:text="Show All"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        android:onClick="showAll"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/qrButton"
@@ -100,11 +101,24 @@
         android:layout_marginEnd="167dp"
         android:layout_marginRight="167dp"
         android:layout_marginBottom="202dp"
-        android:text="Generate QR code"
         android:onClick="QRpage"
+        android:text="Generate QR code"
         app:backgroundTint="@color/teal_200"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/languageButton"
+        android:layout_width="57dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:onClick="changeLanguage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_manage" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
