@@ -11,7 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BSafe">
         <activity android:name=".ViewAllergies" />
-        <activity android:name=".UpdateAllergyActivity" />
+        <activity android:name=".UpdateAllergyActivity"
+            android:exported="true"
+            />
+        <activity android:name=".ChangeLanguage" />
         <activity
             android:name=".QRGenerator"
             android:exported="true" />

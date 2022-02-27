@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
     // GO TO ADD QR PAGE
     public void QRpage(View view) {
-        System.out.println("Here");
         Intent i=new Intent(getBaseContext(),QRGenerator.class);
         finish();
         startActivity(i);
@@ -109,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // GO TO CHANGE LANGUAGE PAGE
-    public void changeLanguage(View view) {
-        System.out.println("hello");
-        Intent i = new Intent(getBaseContext(), ChangeLanguage.class);
-        finish();
-        startActivity(i);
+    public void changeLanguagePage(View view) {
+        Intent intent = new Intent(getBaseContext(), ChangeLanguage.class);
+        //finish();
+        startActivity(intent);
 
     }
+
 }
