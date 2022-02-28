@@ -57,6 +57,7 @@ public class ViewAllergies extends AppCompatActivity {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
 
             //ENGLISH TEXT
+            // TODO: CHANGE AFTER TRANSLATE API. getNativeLanguage() METHOD
             TextView english = new TextView(this);
             english.setText(allergies.get(i).name);
             english.setTextSize(20);
