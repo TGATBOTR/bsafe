@@ -90,14 +90,12 @@ public class MainActivity extends AppCompatActivity {
     // GO TO ADD ALLERGY PAGE
     public void addAllergy(View view) {
         Intent i=new Intent(getBaseContext(),AddAllergyActivity.class);
-        finish();
         startActivity(i);
     }
 
     // GO TO ADD QR PAGE
     public void QRpage(View view) {
         Intent i=new Intent(getBaseContext(),QRGenerator.class);
-        finish();
         startActivity(i);
     }
 
