@@ -104,4 +104,13 @@ public class MainActivity extends AppCompatActivity {
         Intent i=new Intent(getBaseContext(),ViewAllergies.class);
         startActivity(i);
     }
+
+    // GO TO CHANGE LANGUAGE PAGE
+    public void changeLanguagePage(View view) {
+        Intent intent = new Intent(getBaseContext(), ChangeLanguage.class);
+        //finish();
+        startActivity(intent);
+
+    }
+
 }

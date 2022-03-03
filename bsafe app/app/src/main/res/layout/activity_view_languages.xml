@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChangeLanguage">
+
+    <LinearLayout
+        android:background="?attr/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <TextView
+            android:padding="16dp"
+            android:text= "Select Language"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <com.webianks.library.scroll_choice.ScrollChoice
+        android:id="@+id/scroll_choice"
+        android:layout_width="match_parent"
+        android:layout_height="620dp"
+        app:scroll_atmospheric="true"
+        app:scroll_background_color="#F5f5f5"
+        app:scroll_indicator="true"
+        app:scroll_indicator_color="#FFF"
+        app:scroll_item_align="center"
+        app:scroll_item_text_color="?attr/colorAccent"
+        app:scroll_selected_item_background="#FFF"
+        app:scroll_selected_item_text_color="#FFC107"
+        tools:ignore="MissingClass" />
+
+    <Button
+        android:id="@+id/txt_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="editLanguage"
+        android:text="OK" />
+
+</LinearLayout>
