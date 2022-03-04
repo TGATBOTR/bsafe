@@ -5,6 +5,7 @@ import com.example.bsafe.Database.Daos.UserDao;
 import com.example.bsafe.Database.Models.User;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Singleton;
 import dagger.Module;
@@ -35,6 +36,7 @@ public class SessionModule {
                     user = new User();
                     user.firstName = "Fred";
                     user.lastName = "Llewellyn";
+                    user.setLocale(Locale.getDefault());
 
                     userDao.insertAll(user);
                 } else {
