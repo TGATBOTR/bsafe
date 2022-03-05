@@ -3,6 +3,7 @@ package com.example.bsafe.Auth;
 
 import com.example.bsafe.Database.Daos.UserDao;
 import com.example.bsafe.Database.Models.User;
+import com.example.bsafe.I18n.Localizer;
 
 import java.util.List;
 import java.util.Locale;
@@ -23,7 +24,7 @@ public class SessionModule {
 
     @Provides
     @Singleton
-    public Session provideSession(UserDao userDao) {
+    public Session provideSession(UserDao userDao, Localizer i18n) {
 
         GetUserThread t = new GetUserThread() {
             public void run() {
@@ -55,7 +56,7 @@ public class SessionModule {
             // Do nothing as on main thread
         }
 
-        Session session = new Session();
+        Session session = new Session(i18n);
 
         session.login(t.user);
 

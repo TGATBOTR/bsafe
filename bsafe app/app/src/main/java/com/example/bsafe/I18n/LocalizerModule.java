@@ -17,9 +17,7 @@ import dagger.hilt.components.SingletonComponent;
 public class LocalizerModule {
     @Provides
     @Singleton
-    public Localizer getLocalizer(Session session) {
-        Locale l = session.getUser().getLocale();
-
-        return new Localizer(l);
+    public Localizer getLocalizer() {
+        return new Localizer(Locale.getDefault());
     }
 }
