@@ -3,6 +3,8 @@ package com.example.bsafe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.I18n.Localizer;
 
 import javax.inject.Inject;
 
@@ -22,6 +25,9 @@ public class AddAllergyActivity extends AppCompatActivity {
     public Session session;
     @Inject
     public AllergyDao allergyDao;
+
+    @Inject
+    public Localizer i18n;
 
     private TextView allergyName;
     private TextView allergySeverity;
@@ -36,6 +42,21 @@ public class AddAllergyActivity extends AppCompatActivity {
         allergySeverity = findViewById(R.id.allergySeverity);
         allergySymptoms = findViewById(R.id.allergySymptoms);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLocalisation();
+    }
+
+    public void updateLocalisation()
+    {
+        ((EditText) findViewById(R.id.allergyName)).setHint(i18n.get("ENTER_ALLERGY"));
+        ((EditText) findViewById(R.id.allergySeverity)).setHint(i18n.get("ENTER_ALLERGY_LEVEL"));
+        ((EditText) findViewById(R.id.allergySymptoms)).setHint(i18n.get("ENTER_ALLERGY_SYMPTOMS"));
+
+        ((Button) findViewById(R.id.addAllergy)).setText(i18n.get("ADD_ALLERGY"));
     }
 
     /*

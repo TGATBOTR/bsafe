@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         setAllergyText();
-        updateLocalisation();
     }
 
     @Override
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
     {
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
         ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
-
     }
 
     // MOVE BETWEEN ALLERGIES
