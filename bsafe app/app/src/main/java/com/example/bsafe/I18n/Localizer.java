@@ -32,4 +32,9 @@ public class Localizer
     {
         return bundle.getString(key);
     }
+
+    public String get(String key, Locale locale) {
+        ResourceBundle bundle = ResourceBundle.getBundle(MESSAGES_KEY, locale);
+        return bundle.getString(key);
+    }
 }

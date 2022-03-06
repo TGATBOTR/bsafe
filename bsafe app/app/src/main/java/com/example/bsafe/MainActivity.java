@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateLocalisation()
     {
+        ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
+        ((TextView) findViewById(R.id.textView4)).setText(i18n.get("FRENCH") + ":");
+
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
         ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
     }
