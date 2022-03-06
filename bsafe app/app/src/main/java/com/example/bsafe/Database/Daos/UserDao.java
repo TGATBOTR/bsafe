@@ -19,7 +19,7 @@ public interface UserDao {
     User getUserById(Integer uid);
 
     @Insert
-    void insertAll(User... users);
+    List<Long> insertAll(User... users);
 
     @Update
     public void updateUsers(User... users);

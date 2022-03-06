@@ -1,6 +1,7 @@
 package com.example.bsafe;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
 import android.content.Context;
@@ -67,9 +68,20 @@ public class DatabaseTests {
         context.addUserToDb(user);
 
         User _user = context.readLastUserFromDb();
-        assertEquals(user.uid, _user.uid);
         assertEquals(user.firstName, _user.firstName);
         assertEquals(user.lastName, user.lastName);
+    }
+
+    @Test
+    public void createAndReadMultipleUsers()
+    {
+        context.addUserToDb(user);
+        context.addUserToDb(new User());
+
+        List<User> users = userDao.getAll();
+        assert(users.size() >= 2);
+
+        assertNotEquals(users.get(0).uid, users.get(1).uid);
     }
 
     @Test
@@ -83,7 +95,6 @@ public class DatabaseTests {
         userDao.updateUsers(user);
 
         User _user = context.readLastUserFromDb();
-        assertEquals(user.uid, _user.uid);
         assertEquals(user.firstName, _user.firstName);
         assertEquals(user.lastName, _user.lastName);
     }
@@ -105,11 +116,35 @@ public class DatabaseTests {
         context.addUserToDb(user);
         Allergy allergy = context.addNewAllergyToDb(user);
 
-        Allergy _allergy = context.readLastAllergyFromDb(user);
-        assertEquals(allergy.uid, _allergy.uid);
+        Allergy _allergy = context.readLastAllergyFromDb();
         assertEquals(allergy.name, _allergy.name);
         assertEquals(allergy.scale, _allergy.scale);
         assertEquals(allergy.symptoms, _allergy.symptoms);
+    }
+
+    @Test
+    public void createAndReadAllergyLinkedToUser()
+    {
+        context.addUserToDb(user);
+        Allergy allergy = context.addNewAllergyToDb(user);
+
+        Allergy _allergy = context.readLastAllergyFromDb(user);
+        assertEquals(allergy.name, _allergy.name);
+        assertEquals(allergy.scale, _allergy.scale);
+        assertEquals(allergy.symptoms, _allergy.symptoms);
+    }
+
+    @Test
+    public void createAndReadMultipleAllergies()
+    {
+        context.addUserToDb(user);
+        context.addNewAllergyToDb(user);
+        context.addNewAllergyToDb(user);
+
+        List<Allergy> allergies = allergyDao.getAll();
+        assert(allergies.size() >= 2);
+
+        assertNotEquals(allergies.get(0).uid, allergies.get(1).uid);
     }
 
     @Test
@@ -124,8 +159,25 @@ public class DatabaseTests {
         allergy.symptoms = "acute organ hemorrhage";
         allergyDao.updateAll(allergy);
 
+        Allergy _allergy = context.readLastAllergyFromDb();
+        assertEquals(allergy.name, _allergy.name);
+        assertEquals(allergy.scale, _allergy.scale);
+        assertEquals(allergy.symptoms, _allergy.symptoms);
+    }
+
+    @Test
+    public void readAndUpdateAllergyLinkedToUser()
+    {
+        context.addUserToDb(user);
+        Allergy allergy = context.addNewAllergyToDb(user);
+
+        // Update fields
+        allergy.name = "rugs";
+        allergy.scale = 4;
+        allergy.symptoms = "acute organ hemorrhage";
+        allergyDao.updateAll(allergy);
+
         Allergy _allergy = context.readLastAllergyFromDb(user);
-        assertEquals(allergy.uid, _allergy.uid);
         assertEquals(allergy.name, _allergy.name);
         assertEquals(allergy.scale, _allergy.scale);
         assertEquals(allergy.symptoms, _allergy.symptoms);
@@ -160,7 +212,8 @@ public class DatabaseTests {
 
         public void addUserToDb(User user)
         {
-            userDao.insertAll(user);
+            List<Long> ids = userDao.insertAll(user);
+            user.uid = (ids.size() > 0 && ids.get(0) != null ? ids.get(0).intValue() : 0);
         }
 
         public User readLastUserFromDb()
@@ -181,7 +234,10 @@ public class DatabaseTests {
             allergy.symptoms = "total organ failure";
 
             allergy.attachToUser(user);
-            allergyDao.insertAll(allergy);
+
+            // UID may change when allergy is inserted to db
+            List<Long> ids = allergyDao.insertAll(allergy);
+            allergy.uid = (ids.size() > 0 && ids.get(0) != null ? ids.get(0).intValue() : 0);
 
             return allergy;
         }
@@ -189,6 +245,16 @@ public class DatabaseTests {
         public Allergy readLastAllergyFromDb(User user)
         {
             List<Allergy> allergies = allergyDao.getUserAllergies(user.uid);
+            assert(allergies.size() > 0);
+            Allergy allergy = allergies.get(allergies.size() - 1);
+            assertNotNull(allergy);
+
+            return allergy;
+        }
+
+        public Allergy readLastAllergyFromDb()
+        {
+            List<Allergy> allergies = allergyDao.getAll();
             assert(allergies.size() > 0);
             Allergy allergy = allergies.get(allergies.size() - 1);
             assertNotNull(allergy);
