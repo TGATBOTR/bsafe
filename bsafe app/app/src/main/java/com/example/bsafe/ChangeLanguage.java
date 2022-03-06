@@ -59,10 +59,16 @@ public class ChangeLanguage extends AppCompatActivity {
     }
 
     private void loadDatas() {
-        languages.put("English - English", new Locale("en"));
-        languages.put("Romanian - Română", new Locale("ro"));
-        languages.put("Italian - Italiano", new Locale("it"));
-        languages.put("Welsh - Cymraeg", new Locale("cy"));
+
+        Locale l;
+        l = new Locale("en");
+        languages.put("English - " + i18n.get("LANGUAGE", l), l);
+        l = new Locale("ro");
+        languages.put("Romanian - " + i18n.get("LANGUAGE", l), l);
+        l = new Locale("it");
+        languages.put("Italian - " + i18n.get("LANGUAGE", l), l);
+        l = new Locale("cy");
+        languages.put("Welsh - " + i18n.get("LANGUAGE", l), l);
 
         List<String> datas = new ArrayList<>(languages.keySet());
         Collections.sort(datas);
