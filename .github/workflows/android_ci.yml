@@ -10,6 +10,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: CD to Project
+        run: cd "./bsafe app"
+
       - name: Set up JDK environment
         uses: actions/setup-java@v1.4.3
         with:
@@ -22,7 +25,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
     
       - name: Execute Gradle build
-        run: "./bsafe app/gradlew" build
+        run: ./gradlew build
 
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -31,4 +34,4 @@ jobs:
           target: default
           arch: x86
           profile: Nexus 6
-          script: "./bsafe app/gradlew" connectedCheck --stacktrace
+          script: ./gradlew connectedCheck --stacktrace
