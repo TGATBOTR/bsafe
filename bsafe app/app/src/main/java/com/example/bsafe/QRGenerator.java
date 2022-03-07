@@ -1,7 +1,9 @@
 package com.example.bsafe;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +33,6 @@ public class QRGenerator extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
 
     }
 }

@@ -20,7 +20,7 @@ public interface AllergyDao {
     List<Allergy> getUserAllergies(Integer user_id);
 
     @Insert
-    void insertAll(Allergy... allergies);
+    List<Long> insertAll(Allergy... allergies);
 
     @Update
     public void updateAll(Allergy... allergies);
