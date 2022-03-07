@@ -23,6 +23,8 @@ jobs:
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
+          arguments: assembleRelease
+
 
       - name: Gradle Build
         run: "./bsafe app/gradlew" build
