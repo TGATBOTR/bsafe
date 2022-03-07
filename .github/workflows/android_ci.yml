@@ -6,12 +6,14 @@ jobs:
   instrumented_tests:
     name: Instrumented Tests
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: "./bsafe app"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
-      - name: CD to Project
-        run: cd "./bsafe app"
 
       - name: Set up JDK environment
         uses: actions/setup-java@v1.4.3
