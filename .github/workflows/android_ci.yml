@@ -25,9 +25,8 @@ jobs:
           configuration-cache-enabled: true
           arguments: assembleRelease
 
-
       - name: Gradle Build
-        run: "./bsafe app/gradlew" build
+        run: './bsafe app/gradlew' build
 
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -36,4 +35,4 @@ jobs:
           target: default
           arch: x86
           profile: Nexus 6
-          script: "./bsafe app/gradlew" connectedCheck --stacktrace
+          script: './bsafe app/gradlew' connectedCheck --stacktrace
