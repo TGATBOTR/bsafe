@@ -22,7 +22,7 @@ jobs:
         uses: gradle/gradle-build-action@v2
     
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: "./bsafe app/gradlew" build
 
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -31,4 +31,4 @@ jobs:
           target: default
           arch: x86
           profile: Nexus 6
-          script: ./gradlew connectedCheck --stacktrace
+          script: "./bsafe app/gradlew" connectedCheck --stacktrace
