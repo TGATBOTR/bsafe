@@ -15,11 +15,17 @@ jobs:
         with:
           java-version: 11
 
-      - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
+      - name: Setup Gradle
+        id: buildAllApks
+        uses: eskatos/gradle-command-action@v1.3.3
         with:
           gradle-version: 6.5
-          arguments: build
+          wrapper-cache-enabled: true
+          dependencies-cache-enabled: true
+          configuration-cache-enabled: true
+
+      - name: Gradle Build
+        run: ./gradlew build
 
       - name: Run Instrumented Tests
         uses: reactivecircus/android-emulator-runner@v2
