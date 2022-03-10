@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.I18n.Localizer;
 
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class UpdateAllergyActivity extends AppCompatActivity {
     public Session session;
     @Inject
     public AllergyDao allergyDao;
+    @Inject
+    public Localizer i18n;
 
     private Allergy allergy;
 
@@ -59,6 +64,22 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         allergySeverity.setText(""+allergy.scale);
         allergySymptoms.setText(allergy.symptoms);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLocalisation();
+    }
+
+    public void updateLocalisation()
+    {
+        ((EditText) findViewById(R.id.allergyName)).setHint(i18n.get("ENTER_ALLERGY"));
+        ((EditText) findViewById(R.id.allergySeverity)).setHint(i18n.get("ENTER_ALLERGY_LEVEL"));
+        ((EditText) findViewById(R.id.allergySymptoms)).setHint(i18n.get("ENTER_ALLERGY_SYMPTOMS"));
+
+        ((Button) findViewById(R.id.updateAllergy)).setText(i18n.get("UPDATE_ALLERGY"));
+        ((Button) findViewById(R.id.deleteAllergy)).setText(i18n.get("DELETE"));
     }
 
     /*

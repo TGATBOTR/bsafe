@@ -3,6 +3,7 @@ package com.example.bsafe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Database.Models.User;
+import com.example.bsafe.I18n.Localizer;
 
 import java.util.List;
 
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     public Session session;
     @Inject
     public AllergyDao allergyDao;
+
+    @Inject
+    public Localizer i18n;
 
     private List <Allergy> allergies;
     private boolean retrieved = false;
@@ -50,6 +55,21 @@ public class MainActivity extends AppCompatActivity {
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         setAllergyText();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLocalisation();
+    }
+
+    public void updateLocalisation()
+    {
+        ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
+        ((TextView) findViewById(R.id.textView4)).setText(i18n.get("FRENCH") + ":");
+
+        ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
+        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
     }
 
     // MOVE BETWEEN ALLERGIES
@@ -82,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
             text = allergies.get(currentAllergy).name;
         } else {
             text = "ADD AN ALLERGY!";
-
         }
         englishAllergyName.setText(text);
     }
@@ -90,14 +109,12 @@ public class MainActivity extends AppCompatActivity {
     // GO TO ADD ALLERGY PAGE
     public void addAllergy(View view) {
         Intent i=new Intent(getBaseContext(),AddAllergyActivity.class);
-        finish();
         startActivity(i);
     }
 
     // GO TO ADD QR PAGE
     public void QRpage(View view) {
         Intent i=new Intent(getBaseContext(),QRGenerator.class);
-        finish();
         startActivity(i);
     }
 
@@ -106,4 +123,13 @@ public class MainActivity extends AppCompatActivity {
         Intent i=new Intent(getBaseContext(),ViewAllergies.class);
         startActivity(i);
     }
+
+    // GO TO CHANGE LANGUAGE PAGE
+    public void changeLanguagePage(View view) {
+        Intent intent = new Intent(getBaseContext(), ChangeLanguage.class);
+        //finish();
+        startActivity(intent);
+
+    }
+
 }
