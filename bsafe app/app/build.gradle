@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.bsafe"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -62,5 +62,5 @@ dependencies {
 
 
     // ADD LIBRARY FOR SCROLL SELECTOR
-    compile "com.webianks.library:scroll-choice:1.0.1"
+    implementation "com.webianks.library:scroll-choice:1.0.1"
 }
