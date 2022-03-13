@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.example.bsafe.Database.DB;
 import com.example.bsafe.Database.Daos.AllergyDao;
+import com.example.bsafe.Database.Daos.EmergencyContactsDao;
 import com.example.bsafe.Database.Daos.UserDao;
 
 import androidx.room.Room;
@@ -39,5 +40,11 @@ public class DatabaseModule {
     @Singleton
     public AllergyDao provideAllergyDAO(DB database) {
         return database.allergyDao();
+    }
+
+    @Provides
+    @Singleton
+    public EmergencyContactsDao provideEmergencyContactsDAO(DB database) {
+        return database.emergencyContactsDao();
     }
 }
