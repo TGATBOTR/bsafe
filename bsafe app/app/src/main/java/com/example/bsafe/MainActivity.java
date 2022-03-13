@@ -10,10 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
+import com.example.bsafe.Database.Daos.EmergencyContactsDao;
 import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.Database.Models.EmergencyContacts;
 import com.example.bsafe.Database.Models.User;
 import com.example.bsafe.I18n.Localizer;
 
+import java.security.UnrecoverableKeyException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -27,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
     public Session session;
     @Inject
     public AllergyDao allergyDao;
+    @Inject
+    public EmergencyContactsDao emergencyContactsDao;
 
     @Inject
     public Localizer i18n;
 
     private List <Allergy> allergies;
+    private List <EmergencyContacts> emergencyContacts = new ArrayList<EmergencyContacts>();
     private boolean retrieved = false;
 
 
@@ -46,9 +53,46 @@ public class MainActivity extends AppCompatActivity {
 
         User currentUser = session.getUser();
 
+
+        EmergencyContacts emergencyContactUK = new EmergencyContacts();
+        emergencyContactUK.name = "United Kingdom";
+        emergencyContactUK.number = 999;
+        emergencyContacts.add(emergencyContactUK);
+
+        EmergencyContacts emergencyContactRO = new EmergencyContacts();
+        emergencyContactRO.name = "Romania";
+        emergencyContactRO.number = 112;
+        emergencyContacts.add(emergencyContactRO);
+
+        EmergencyContacts emergencyContactIT = new EmergencyContacts();
+        emergencyContactIT.name = "Italy";
+        emergencyContactIT.number = 112;
+        emergencyContacts.add(emergencyContactIT);
+
+        EmergencyContacts emergencyContactUS = new EmergencyContacts();
+        emergencyContactUS.name = "United States";
+        emergencyContactUS.number = 911;
+        emergencyContacts.add(emergencyContactUS);
+
+        EmergencyContacts emergencyContactSP = new EmergencyContacts();
+        emergencyContactSP.name = "Spain";
+        emergencyContactSP.number = 112;
+        emergencyContacts.add(emergencyContactSP);
+
+        EmergencyContacts emergencyContactSW = new EmergencyContacts();
+        emergencyContactSW.name = "Switzerland";
+        emergencyContactSW.number = 117;
+        emergencyContacts.add(emergencyContactSW);
+
+
         Thread t = new Thread() {
             public void run() {
                 allergies = allergyDao.getUserAllergies(currentUser.uid);
+                for (EmergencyContacts emergencyContact : emergencyContacts){
+                    if (emergencyContactsDao.searchByName(emergencyContact.name).size() == 0 ){
+                        emergencyContactsDao.insertAll(emergencyContact);
+                    }
+                }
             }
         };
         t.start();
