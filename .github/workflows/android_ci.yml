@@ -1,0 +1,42 @@
+name: Android CI
+
+on: workflow_dispatch
+
+jobs:
+  instrumented_tests:
+    name: Instrumented Tests
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: "./bsafe app"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK environment
+        uses: actions/setup-java@v1.4.3
+        with:
+          java-version: 11
+
+      - name: ls
+        run: ls
+
+      # - name: Setup Gradle
+      #   uses: gradle/gradle-build-action@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Execute Gradle build
+        run: ./gradlew build
+
+      - name: Run Instrumented Tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: default
+          arch: x86
+          profile: Nexus 6
+          script: ./gradlew connectedCheck --stacktrace

@@ -12,9 +12,8 @@
         android:theme="@style/Theme.BSafe">
         <activity android:name=".ViewAllergies" />
         <activity android:name=".UpdateAllergyActivity" />
-        <activity
-            android:name=".QRGenerator"
-            android:exported="true" />
+        <activity android:name=".QRGenerator" />
+        <activity android:name=".ChangeLanguage" />
         <activity android:name=".AddAllergyActivity" />
         <activity android:name=".SplashActivity"
             android:exported="true">

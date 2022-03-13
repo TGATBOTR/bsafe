@@ -7,9 +7,10 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+
     defaultConfig {
         applicationId "com.example.bsafe"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -59,4 +60,7 @@ dependencies {
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.google.zxing:core:3.3.2'
 
+
+    // ADD LIBRARY FOR SCROLL SELECTOR
+    implementation "com.webianks.library:scroll-choice:1.0.1"
 }
