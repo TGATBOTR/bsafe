@@ -24,9 +24,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
@@ -59,6 +65,11 @@ dependencies {
     //For QR Generator
     implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.4'
     implementation 'com.google.zxing:core:3.3.2'
+
+    //For Translation service
+    implementation 'com.google.cloud:google-cloud-translate:2.1.10'
+    implementation platform('com.google.cloud:libraries-bom:24.3.0')
+    implementation 'com.google.cloud:google-cloud-storage'
 
 
     // ADD LIBRARY FOR SCROLL SELECTOR
