@@ -11,7 +11,7 @@ import com.example.bsafe.Database.Models.EmergencyContacts;
 import com.example.bsafe.Database.Models.User;
 
 
-@Database(entities = {User.class, Allergy.class, EmergencyContacts.class}, version = 4)
+@Database(entities = {User.class, Allergy.class, EmergencyContacts.class}, version = 5)
 public abstract class DB extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract AllergyDao allergyDao();

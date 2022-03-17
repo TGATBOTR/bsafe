@@ -15,8 +15,8 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     List<User> getAll();
 
-    @Query("SELECT * FROM users WHERE uid = :uid LIMIT 1")
-    User getUserById(Integer uid);
+    @Query("SELECT * FROM users WHERE uid = :arg0 LIMIT 1")
+    User getUserById(Integer arg0);
 
     @Insert
     List<Long> insertAll(User... users);
