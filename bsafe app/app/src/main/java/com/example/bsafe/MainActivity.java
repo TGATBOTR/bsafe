@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
         ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
+        ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
     }
 
     // MOVE BETWEEN ALLERGIES
