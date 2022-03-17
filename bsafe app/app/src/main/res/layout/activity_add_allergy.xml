@@ -35,17 +35,23 @@
             android:layout_width="match_parent"
             android:layout_height="10dp" />
 
-        <EditText
+        <TextView
+            android:text="Select Allergy Severity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
+        <com.google.android.material.slider.Slider
             android:id="@+id/allergySeverity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="number"
-            android:hint="Enter level of allergy" />
+            android:stepSize="1.0"
+            android:valueFrom="1.0"
+            android:valueTo="10.0"/>
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
+<!--        <Space-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="10dp" />-->
 
         <EditText
             android:id="@+id/allergySymptoms"

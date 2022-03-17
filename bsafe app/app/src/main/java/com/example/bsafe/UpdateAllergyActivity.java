@@ -14,6 +14,7 @@ import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.I18n.Localizer;
+import com.google.android.material.slider.Slider;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
     private Allergy allergy;
 
     private TextView allergyName;
-    private TextView allergySeverity;
+    private Slider allergySeverity;
     private TextView allergySymptoms;
 
     @SuppressLint("SetTextI18n")
@@ -61,7 +62,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         }
 
         allergyName.setText(allergy.name);
-        allergySeverity.setText(""+allergy.scale);
+        allergySeverity.setValue(allergy.scale);
         allergySymptoms.setText(allergy.symptoms);
 
     }
@@ -75,7 +76,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
     public void updateLocalisation()
     {
         ((EditText) findViewById(R.id.allergyName)).setHint(i18n.get("ENTER_ALLERGY"));
-        ((EditText) findViewById(R.id.allergySeverity)).setHint(i18n.get("ENTER_ALLERGY_LEVEL"));
+//        ((EditText) findViewById(R.id.allergySeverity)).setHint(i18n.get("ENTER_ALLERGY_LEVEL"));
         ((EditText) findViewById(R.id.allergySymptoms)).setHint(i18n.get("ENTER_ALLERGY_SYMPTOMS"));
 
         ((Button) findViewById(R.id.updateAllergy)).setText(i18n.get("UPDATE_ALLERGY"));
@@ -91,7 +92,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         // SET VALUES
         newAllergy.uid = allergy.uid;
         newAllergy.name = allergyName.getText().toString();
-        newAllergy.scale = Integer.parseInt(allergySeverity.getText().toString());
+        allergy.scale = (int) allergySeverity.getValue();
         newAllergy.attachToUser(session.getUser());
         newAllergy.symptoms = allergySymptoms.getText().toString();
 
