@@ -16,6 +16,7 @@ import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Daos.UserDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Database.Models.User;
+import com.example.bsafe.I18n.Localizer;
 
 import org.junit.After;
 import org.junit.Before;
@@ -23,6 +24,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -204,7 +206,7 @@ public class DatabaseTests {
             user.firstName = "First_name";
             user.lastName = "Last_name";
 
-            Session session = new Session();
+            Session session = new Session(new Localizer(Locale.getDefault()));
             session.login(user);
 
             return session;
