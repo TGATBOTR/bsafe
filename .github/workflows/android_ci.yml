@@ -57,7 +57,7 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./bsafe\ app/gradlew tasks
+          script: ./bsafe\ app/gradlew projects
 
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
@@ -66,4 +66,4 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./bsafe\ app/gradlew connectedCheck
+          script: ./bsafe\ app/gradlew app:connectedCheck
