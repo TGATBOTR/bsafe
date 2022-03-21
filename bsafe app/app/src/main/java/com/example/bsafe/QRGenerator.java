@@ -12,8 +12,11 @@ import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Utils.NetworkUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -79,15 +82,24 @@ public class QRGenerator extends AppCompatActivity {
         }
 
         StringBuilder urlArgs = new StringBuilder();
-        urlArgs.append("?allergies=");
-        for (Allergy allergy: allergies)
+
+        try
         {
-            urlArgs.append('+');
-            urlArgs.append(allergy.name);
-            urlArgs.append('+');
-            urlArgs.append(allergy.scale);
-            urlArgs.append('+');
-            urlArgs.append(allergy.symptoms);
+            for (int i = 0; i < allergies.size(); i++)
+            {
+                urlArgs.append(i == 0 ? '?' : '&').append(String.format("allergy%d=", i));
+                urlArgs.append(URLEncoder.encode(allergies.get(i).name, StandardCharsets.UTF_8.toString()));
+
+                urlArgs.append(String.format("&scale%d=", i));
+                urlArgs.append(allergies.get(i).scale);
+
+                urlArgs.append(String.format("&symptoms%d=", i));
+                urlArgs.append(URLEncoder.encode(allergies.get(i).symptoms, StandardCharsets.UTF_8.toString()));
+            }
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            e.printStackTrace();
         }
 
         try
@@ -99,8 +111,10 @@ public class QRGenerator extends AppCompatActivity {
         }
         catch (MalformedURLException e)
         {
-            return "Nothing to see here...";
+            e.printStackTrace();
         }
+
+        return "Nothing to see here...";
     }
 
     @NonNull
@@ -123,32 +137,5 @@ public class QRGenerator extends AppCompatActivity {
         }
 
         return qrString.toString();
-    }
-
-    private boolean isConnectedToInternet(@NonNull Application application)
-    {
-        // See https://stackoverflow.com/questions/57284582/networkinfo-has-been-deprecated-by-api-29
-        boolean ret = false;
-
-        ConnectivityManager connectivityManager = (ConnectivityManager)application.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-        {
-            Network network = connectivityManager.getActiveNetwork();
-            if (network != null)
-            {
-                NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
-                ret = networkCapabilities != null
-                        &&(networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
-                        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
-            }
-        }
-        else
-        {
-            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            ret = (networkInfo != null && networkInfo.isConnected());
-        }
-
-        return ret;
     }
 }
