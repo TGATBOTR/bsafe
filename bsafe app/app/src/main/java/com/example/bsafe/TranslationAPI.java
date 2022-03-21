@@ -6,6 +6,9 @@ import com.google.cloud.translate.Translate;
 import com.google.cloud.translate.TranslateOptions;
 import com.google.cloud.translate.Translation;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class TranslationAPI extends AsyncTask<String, String, String> {
     // just pasted in the API key for the prototype
@@ -14,6 +17,15 @@ public class TranslationAPI extends AsyncTask<String, String, String> {
     private final String translateThis;
 
     private final OnTaskCompleted listener;
+
+    public static Map<String, String> targetLanguages;
+    static {
+        targetLanguages = new HashMap<>();
+        targetLanguages.put("ENGLISH", "en");
+        targetLanguages.put("ITALIAN", "it");
+        targetLanguages.put("ROMANIAN", "ro");
+        targetLanguages.put("WELSH", "cy");
+    }
 
     public TranslationAPI(String targetLang,
                           String translateThis, OnTaskCompleted listener){ // params here

@@ -128,9 +128,10 @@ public class ChangeLanguage extends AppCompatActivity {
             i18n.setLocale(result);
 
             //GO BACK TO HOME PAGE
-            Intent i=new Intent(getBaseContext(),MainActivity.class);
-            finish();
-            startActivity(i);
+            onBackPressed();
+            /*Intent i=new Intent(getBaseContext(),MainActivity.class);
+            //finish();
+            startActivity(i);*/
         }
     }
 

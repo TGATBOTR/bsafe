@@ -3,7 +3,10 @@ package com.example.bsafe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,14 +21,16 @@ import com.example.bsafe.I18n.Localizer;
 
 import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Inject
     public Session session;
@@ -44,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView englishAllergyName;
     private int currentAllergy = 0;
+
+    private Map<String, String> langOptions;
+    private String targetLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +107,19 @@ public class MainActivity extends AppCompatActivity {
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         setAllergyText();
+
+        MainActivity mainActivity = this;
+
+        ((Spinner) findViewById(R.id.spinnerTargetLanguage)).setOnItemSelectedListener(this);
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        this.targetLanguage = this.langOptions.get(text);
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     @Override
     protected void onResume() {
@@ -115,6 +135,40 @@ public class MainActivity extends AppCompatActivity {
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
         ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
         ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+
+        Spinner sp = ((Spinner) findViewById(R.id.spinnerTargetLanguage));
+
+        this.langOptions = new HashMap<>();
+
+        // Create hash map with translated display names for languages
+        List<String> displayItems = new ArrayList<>();
+        int selectedId = 0;
+        int counter = 0;
+        for(String key: TranslationAPI.targetLanguages.keySet()) {
+            String translation = i18n.get(key);
+            String value = TranslationAPI.targetLanguages.get(key);
+            this.langOptions.put(translation, value);
+            displayItems.add(translation);
+
+            if(this.targetLanguage != null) {
+                if(this.targetLanguage.equals(value)) {
+                    selectedId = counter;
+                }
+            }
+
+            counter += 1;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, displayItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(adapter);
+
+        if(this.targetLanguage == null) {
+            sp.setSelection(0);
+        } else {
+            sp.setSelection(selectedId);
+        }
+
     }
 
     // MOVE BETWEEN ALLERGIES
