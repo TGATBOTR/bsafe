@@ -1,6 +1,13 @@
 package com.example.bsafe;
 
+import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -64,7 +71,7 @@ public class QRGenerator extends AppCompatActivity {
 
         // TODO: detect if internet connection
 
-        boolean online = true;
+        boolean online = isConnectedToInternet(getApplication());
         return (online ? getQRLink(allergies) : getQRString(allergies));
     }
 
@@ -116,5 +123,32 @@ public class QRGenerator extends AppCompatActivity {
         }
 
         return qrString.toString();
+    }
+
+    private boolean isConnectedToInternet(@NonNull Application application)
+    {
+        // See https://stackoverflow.com/questions/57284582/networkinfo-has-been-deprecated-by-api-29
+        boolean ret = false;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)application.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            Network network = connectivityManager.getActiveNetwork();
+            if (network != null)
+            {
+                NetworkCapabilities networkCapabilities = connectivityManager.getNetworkCapabilities(network);
+                ret = networkCapabilities != null
+                        &&(networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
+                        || networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET));
+            }
+        }
+        else
+        {
+            NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            ret = (networkInfo != null && networkInfo.isConnected());
+        }
+
+        return ret;
     }
 }
