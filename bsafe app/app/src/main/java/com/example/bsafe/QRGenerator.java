@@ -1,13 +1,6 @@
 package com.example.bsafe;
 
-import android.app.Application;
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.Network;
-import android.net.NetworkCapabilities;
-import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -17,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.Utils.NetworkUtils;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +30,8 @@ public class QRGenerator extends AppCompatActivity {
     public Session session;
     @Inject
     public AllergyDao allergyDao;
+    @Inject
+    public NetworkUtils networkUtils;
 
     private final int qrCodeSize = 500;
     private final List<Allergy> allergies = new ArrayList<>();
@@ -69,9 +65,8 @@ public class QRGenerator extends AppCompatActivity {
     {
         // TODO: Translation goes here
 
-        // TODO: detect if internet connection
-
-        boolean online = isConnectedToInternet(getApplication());
+        boolean online = networkUtils.deviceIsConnectedToInternet();
+        assert(networkUtils.application == getApplication());
         return (online ? getQRLink(allergies) : getQRString(allergies));
     }
 
