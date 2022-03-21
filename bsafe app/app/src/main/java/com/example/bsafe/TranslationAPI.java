@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class TranslationAPI extends AsyncTask<String, String, String> {
     // just pasted in the API key for the prototype
-    private static final String APIKey = "AIzaSyDYdZsUSJH4KKCjyHydYB_bWnSRW2k8-pU";
+    private static final String APIKey = "AIzaSyBm8G6TOYa-wkZEfzUcXSZ-vn-jo21RSUY"; //"AIzaSyDYdZsUSJH4KKCjyHydYB_bWnSRW2k8-pU";
     private final String targetLang;
     private final String translateThis;
 
