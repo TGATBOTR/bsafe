@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String text = parent.getItemAtPosition(position).toString();
         this.targetLanguage = this.langOptions.get(text);
+        translateAllergy();
     }
     @Override
     public void onNothingSelected(AdapterView<?> parent) { }
@@ -130,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void updateLocalisation()
     {
         ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
-        ((TextView) findViewById(R.id.textView4)).setText(i18n.get("FRENCH") + ":");
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
         ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
@@ -199,10 +199,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         String text;
         if(allergies.size() != 0){
             text = allergies.get(currentAllergy).name;
+            translateAllergy();
         } else {
             text = "ADD AN ALLERGY!";
         }
         englishAllergyName.setText(text);
+    }
+
+    private void translateAllergy()
+    {
+        ((TextView) findViewById(R.id.translatedAllergyName)).setText(i18n.get("LOADING"));
+
+        String text = allergies.get(currentAllergy).name;
+
+
+        TranslationAPI translateTask = new TranslationAPI(this.targetLanguage, text, new OnTaskCompleted() {
+            @Override
+            void onTaskCompleted(String translation) {
+                ((TextView) findViewById(R.id.translatedAllergyName)).setText(translation);
+            }
+        });
+
+        translateTask.execute();
     }
 
     // GO TO ADD ALLERGY PAGE
