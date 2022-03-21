@@ -3,6 +3,8 @@ package com.example.bsafe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,9 +32,15 @@ public class AddAllergyActivity extends AppCompatActivity {
     @Inject
     public Localizer i18n;
 
-    private TextView allergyName;
+    private AutoCompleteTextView allergyName;
     private Slider allergySeverity;
-    private TextView allergySymptoms;
+    private AutoCompleteTextView allergySymptoms;
+
+    private String[] commonAllergies;
+    private String[] commonSymptoms;
+
+    private ArrayAdapter<String> allergyAdapter;
+    private ArrayAdapter<String> symptomAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +50,17 @@ public class AddAllergyActivity extends AppCompatActivity {
         allergyName = findViewById(R.id.allergyName);
         allergySeverity = findViewById(R.id.allergySeverity);
         allergySymptoms = findViewById(R.id.allergySymptoms);
+
+        commonAllergies = getResources().getStringArray(R.array.commonAllergies);
+        allergyAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, commonAllergies);
+        allergyName.setAdapter(allergyAdapter);
+        allergyName.setThreshold(0);
+
+
+        commonSymptoms = getResources().getStringArray(R.array.commonSymptoms);
+        symptomAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, commonSymptoms);
+        allergySymptoms.setAdapter(symptomAdapter);
+        allergySymptoms.setThreshold(0);
 
     }
 

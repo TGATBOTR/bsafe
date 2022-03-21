@@ -1,4 +1,38 @@
 <resources>
     <string name="app_name">bSafe</string>
     <string name="qr_code">QR code</string>
+
+    <string-array name="commonAllergies">
+        <item>peanuts</item>
+        <item>tree nuts</item>
+        <item>milk</item>
+        <item>eggs</item>
+        <item>fish</item>
+        <item>shellfish</item>
+        <item>soy</item>
+        <item>wheat</item>
+        <item>sesame seeds</item>
+        <item>mustard</item>
+        <item>celery</item>
+        <item>lupin</item>
+    </string-array>
+
+    <string-array name="commonSymptoms">
+        <item>Rash</item>
+        <item>Hives</item>
+        <item>Itching</item>
+        <item>Swelling</item>
+        <item>Difficulty swallowing</item>
+        <item>Runny or congested nose</item>
+        <item>Hoarse voice</item>
+        <item>Wheezing</item>
+        <item>shortness of breath</item>
+        <item>Diarrhea</item>
+        <item>Lightheadedness</item>
+        <item>Fainting</item>
+        <item>Nausea</item>
+        <item>Vomiting</item>
+        <item>abdominal pain</item>
+        <item>stomach cramps</item>
+    </string-array>
 </resources>

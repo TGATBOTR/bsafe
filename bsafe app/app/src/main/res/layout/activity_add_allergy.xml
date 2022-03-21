@@ -23,13 +23,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.349">
 
-        <EditText
+        <com.example.bsafe.InstantAutoComplete
             android:id="@+id/allergyName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:hint="Enter Allergy/Phrase" />
+            android:hint="Enter Allergy/Phrase"/>
+
 
         <Space
             android:layout_width="match_parent"
@@ -53,7 +54,7 @@
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="10dp" />-->
 
-        <EditText
+        <com.example.bsafe.InstantAutoComplete
             android:id="@+id/allergySymptoms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
