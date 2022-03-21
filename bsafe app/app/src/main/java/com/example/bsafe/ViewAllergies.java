@@ -67,7 +67,14 @@ public class ViewAllergies extends AppCompatActivity {
 
             //TRANSLATED TEXT
             TextView translate = new TextView(this);
-            translate.setText("translated"); // TODO: CHANGE AFTER TRANSLATE API
+            TranslationAPI translateTask = new TranslationAPI(MainActivity.targetLanguage, allergies.get(i).name, new OnTaskCompleted() {
+                @Override
+                void onTaskCompleted(String translation) {
+                    translate.setText(translation);
+                }
+            });
+            translateTask.execute();
+
             english.setTextSize(20);
             translate.setLayoutParams(params);
             translate.setGravity(Gravity.CENTER);

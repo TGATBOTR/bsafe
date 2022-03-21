@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private int currentAllergy = 0;
 
     private Map<String, String> langOptions;
-    private String targetLanguage;
+    public static String targetLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
