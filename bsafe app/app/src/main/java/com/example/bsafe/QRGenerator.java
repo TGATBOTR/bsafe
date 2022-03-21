@@ -11,6 +11,8 @@ import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,13 +43,13 @@ public class QRGenerator extends AppCompatActivity {
         getAllergiesThread.start();
         try { getAllergiesThread.join(); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        String qrValue = getQRContentFromAllergies(allergies);
+        String qrValue = getQRContent(allergies);
         QRGEncoder qrgEncoder = new QRGEncoder(qrValue, null, QRGContents.Type.TEXT, qrCodeSize);
 
         Bitmap bitmap = qrgEncoder.getBitmap();
         if (bitmap == null)
         {
-            // TODO: replace with placeholder image for missing QR code
+            // TODO: Replace with placeholder image for missing QR code
             bitmap = Bitmap.createBitmap(qrCodeSize, qrCodeSize, Bitmap.Config.ARGB_8888);
         }
 
@@ -56,14 +58,63 @@ public class QRGenerator extends AppCompatActivity {
     }
 
     @NonNull
-    private String getQRContentFromAllergies(@NonNull List<Allergy> allergies)
+    private String getQRContent(@NonNull List<Allergy> allergies)
     {
-        StringBuilder qrValue = new StringBuilder();
-        for (Allergy allergy: allergies)
+        // TODO: Translation goes here
+
+        // TODO: detect if internet connection
+
+        boolean online = true;
+        return (online ? getQRLink(allergies) : getQRString(allergies));
+    }
+
+    @NonNull
+    private String getQRLink(@NonNull List<Allergy> allergies)
+    {
+        if (allergies.size() == 0)
         {
-            qrValue.append(String.format("%s | %s | %s", allergy.name, allergy.scale, allergy.symptoms));
+            return "";
         }
 
-        return qrValue.toString();
+        StringBuilder urlArgs = new StringBuilder();
+        urlArgs.append("?allergies=");
+        for (Allergy allergy: allergies)
+        {
+            urlArgs.append('+');
+            urlArgs.append(allergy.name);
+            urlArgs.append('+');
+            urlArgs.append(allergy.scale);
+            urlArgs.append('+');
+            urlArgs.append(allergy.symptoms);
+        }
+
+        try
+        {
+            URL hostUrl = new URL("https", "tgatbotr.github.io", "index.html");
+            URL fullUrl = new URL(hostUrl, urlArgs.toString());
+
+            return fullUrl.toString();
+        }
+        catch (MalformedURLException e)
+        {
+            return "Nothing to see here...";
+        }
+    }
+
+    @NonNull
+    private String getQRString(@NonNull List<Allergy> allergies)
+    {
+        StringBuilder qrString = new StringBuilder();
+
+        for (Allergy allergy: allergies)
+        {
+            if (qrString.length() > 0)
+            {
+                qrString.append("____");
+            }
+            qrString.append(String.format("(%s--%d/%d--%s)", allergy.name, allergy.scale, 10, allergy.symptoms));
+        }
+
+        return qrString.toString();
     }
 }
