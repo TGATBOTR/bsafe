@@ -16,6 +16,9 @@ public class TranslationAPI extends AsyncTask<String, String, String> {
     private final String targetLang;
     private final String translateThis;
 
+
+    private static Map<String, String> cache = new HashMap<String, String>();
+
     private final OnTaskCompleted listener;
 
     public static Map<String, String> targetLanguages;
@@ -36,8 +39,17 @@ public class TranslationAPI extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
+        String lookup = targetLang + " " + translateThis;
+        if(TranslationAPI.cache.containsKey(lookup)) {
+            return TranslationAPI.cache.get(lookup);
+        }
+
+
         Translate translate = TranslateOptions.newBuilder().setApiKey(APIKey).build().getService();
         Translation translation = translate.translate(translateThis, Translate.TranslateOption.targetLanguage(targetLang));
+
+        TranslationAPI.cache.put(lookup, translation.getTranslatedText());
+
         return translation.getTranslatedText();
     }
 
