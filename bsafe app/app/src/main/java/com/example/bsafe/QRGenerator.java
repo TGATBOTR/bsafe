@@ -123,7 +123,7 @@ public class QRGenerator extends AppCompatActivity {
             qrString.append('(');
             qrString.append(allergy.name);
             qrString.append("--");
-            qrString.append(allergy.symptoms);
+            qrString.append(allergy.scale).append("/").append(10);
             qrString.append(')');
         }
 
