@@ -102,22 +102,6 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
 
-            //Country
-            TextView country = new TextView(this);
-            country.setText(allergyList.get(i).name);
-            country.setTextSize(20);
-            country.setLayoutParams(params);
-            country.setGravity(Gravity.CENTER);
-            horizontalLayout.addView(country);
-
-            //Number
-            TextView number = new TextView(this);
-            number.setText("translate");
-            number.setTextSize(20);
-            number.setLayoutParams(params);
-            number.setGravity(Gravity.CENTER);
-            horizontalLayout.addView(number);
-
             //ENGLISH TEXT
             // TODO: CHANGE AFTER TRANSLATE API. getNativeLanguage() METHOD
             TextView english = new TextView(this);
@@ -137,7 +121,7 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
             });
             translateTask.execute();
 
-            english.setTextSize(20);
+            translate.setTextSize(20);
             translate.setLayoutParams(params);
             translate.setGravity(Gravity.CENTER);
             horizontalLayout.addView(translate);
