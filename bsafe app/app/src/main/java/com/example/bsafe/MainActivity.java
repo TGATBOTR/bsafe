@@ -177,4 +177,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void seeContacts(View view) {
+        Intent i=new Intent(getBaseContext(),ViewContacts.class);
+        startActivity(i);
+    }
 }

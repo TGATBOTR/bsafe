@@ -15,6 +15,7 @@
         <activity android:name=".QRGenerator" />
         <activity android:name=".ChangeLanguage" />
         <activity android:name=".AddAllergyActivity" />
+        <activity android:name=".ViewContacts"/>
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

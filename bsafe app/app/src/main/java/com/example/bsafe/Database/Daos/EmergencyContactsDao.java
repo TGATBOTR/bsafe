@@ -15,7 +15,7 @@ package com.example.bsafe.Database.Daos;
 @Dao
 public interface EmergencyContactsDao {
     @Query("SELECT * FROM emergencyContacts")
-    List<Allergy> getAll();
+    List<EmergencyContacts> getAll();
 
     @Query("SELECT * FROM emergencyContacts WHERE name = :name")
     List<EmergencyContacts>  searchByName(String name);

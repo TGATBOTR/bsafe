@@ -1,7 +1,5 @@
 package com.example.bsafe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.bsafe.Auth.Session;
-import com.example.bsafe.Database.Daos.AllergyDao;
-import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.Database.Daos.EmergencyContactsDao;
 import com.example.bsafe.Database.Models.EmergencyContacts;
 
 import java.util.ArrayList;
@@ -27,17 +26,17 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ViewAllergies extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class ViewContacts extends AppCompatActivity implements SearchView.OnQueryTextListener {
+
+    private SearchView searchView;
+    private LinearLayout layout;
 
     @Inject
     public Session session;
     @Inject
-    public AllergyDao allergyDao;
+    public EmergencyContactsDao emergencyContactsDao;
 
-    private List<Allergy> allergies;
-
-    private LinearLayout layout;
-    private SearchView searchView;
+    private List<EmergencyContacts> emergencyContacts;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -47,18 +46,18 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 
         Thread t = new Thread() {
             public void run() {
-                allergies = allergyDao.getUserAllergies(session.getUser().uid);
+                emergencyContacts = emergencyContactsDao.getAll();
             }
         };
         t.start();
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
-        ((TextView) findViewById(R.id.textView6)).setText("Allergies");
+        ((TextView) findViewById(R.id.textView6)).setText("Contacts");
         searchView = findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
         layout = findViewById(R.id.linearlayout);
-        setList(allergies);
+        setList(emergencyContacts);
 
     }
 
@@ -82,19 +81,19 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 
     private void searchList(String query){
         layout.removeAllViews();
-        List<Allergy> allergiesList= new ArrayList<>(allergies);
-        for (Allergy allergy : allergies){
-            String contactName = allergy.name.toLowerCase();
+        List<EmergencyContacts> emergencyContactsList= new ArrayList<>(emergencyContacts);
+        for (EmergencyContacts contact : emergencyContacts){
+            String contactName = contact.name.toLowerCase();
             if (!contactName.contains(query.toLowerCase())){
-                allergiesList.remove(allergy);
+                emergencyContactsList.remove(contact);
             }
         }
-        setList(allergiesList);
+        setList(emergencyContactsList);
     }
 
     @SuppressLint("SetTextI18n")
-    private void setList(List<Allergy> allergyList){
-        for (int i = 0; i < allergyList.size(); i++){
+    private void setList(List<EmergencyContacts> emergencyContactsList){
+        for (int i = 0; i < emergencyContactsList.size(); i++){
             // ROW
             AllergyView horizontalLayout = new AllergyView(this, i);
             horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -104,7 +103,7 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 
             //Country
             TextView country = new TextView(this);
-            country.setText(allergyList.get(i).name);
+            country.setText(emergencyContactsList.get(i).name);
             country.setTextSize(20);
             country.setLayoutParams(params);
             country.setGravity(Gravity.CENTER);
@@ -112,7 +111,7 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 
             //Number
             TextView number = new TextView(this);
-            number.setText("translate");
+            number.setText(emergencyContactsList.get(i).number.toString());
             number.setTextSize(20);
             number.setLayoutParams(params);
             number.setGravity(Gravity.CENTER);
@@ -126,13 +125,13 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
 /*
 Custom class to make an array of linearlayouts clickable
  */
-class AllergyView extends LinearLayout{
+class ContactView extends LinearLayout{
     int index;
 
-    public AllergyView(Context context, int i){
+    public ContactView(Context context, int i){
         super(context);
         this.index = i;
-        this.setOnClickListener(new View.OnClickListener() {
+        this.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(context,UpdateAllergyActivity.class);
