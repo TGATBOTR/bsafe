@@ -17,7 +17,8 @@ import android.widget.TextView;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
-import com.example.bsafe.Database.Models.EmergencyContacts;
+import com.example.bsafe.Translation.OnTaskCompleted;
+import com.example.bsafe.Translation.TranslationAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
             TextView translate = new TextView(this);
             TranslationAPI translateTask = new TranslationAPI(MainActivity.targetLanguage, allergies.get(i).name, new OnTaskCompleted() {
                 @Override
-                void onTaskCompleted(String translation) {
+                public void onTaskCompleted(String translation) {
                     translate.setText(translation);
                 }
             });
