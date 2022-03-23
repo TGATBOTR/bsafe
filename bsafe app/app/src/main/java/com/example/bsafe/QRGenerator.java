@@ -45,20 +45,20 @@ public class QRGenerator extends AppCompatActivity {
     // TODO: Probably move to translation class / similar
     private static final HashMap<String, Integer> allergyIds = new HashMap<String, Integer>()
     {{
-        put("celery", 1);
-        put("cereals", 2);
-        put("crustaceans", 3);
-        put("eggs", 4);
-        put("fish", 5);
-        put("lupin", 6);
-        put("milk", 7);
-        put("molluscs", 8);
-        put("mustard", 9);
-        put("nuts", 10);
-        put("peanuts", 11);
-        put("sesame seeds", 12);
-        put("soya", 13);
-        put("sulphites", 14);
+        put("celery", 0);
+        put("cereals", 1);
+        put("crustaceans", 2);
+        put("eggs", 3);
+        put("fish", 4);
+        put("lupin", 5);
+        put("milk", 6);
+        put("molluscs", 7);
+        put("mustard", 8);
+        put("nuts", 9);
+        put("peanuts", 10);
+        put("sesame seeds", 11);
+        put("soya", 12);
+        put("sulphites", 13);
     }};
 
     @Override
