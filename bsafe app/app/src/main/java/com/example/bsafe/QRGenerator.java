@@ -1,6 +1,7 @@
 package com.example.bsafe;
 
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.ImageView;
 
@@ -11,13 +12,14 @@ import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Utils.NetworkUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,6 +40,26 @@ public class QRGenerator extends AppCompatActivity {
 
     private final int qrCodeSize = 500;
     private final List<Allergy> allergies = new ArrayList<>();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    // TODO: Probably move to translation class / similar
+    private static final HashMap<String, Integer> allergyIds = new HashMap<String, Integer>()
+    {{
+        put("celery", 1);
+        put("cereals", 2);
+        put("crustaceans", 3);
+        put("eggs", 4);
+        put("fish", 5);
+        put("lupin", 6);
+        put("milk", 7);
+        put("molluscs", 8);
+        put("mustard", 9);
+        put("nuts", 10);
+        put("peanuts", 11);
+        put("sesame seeds", 12);
+        put("soya", 13);
+        put("sulphites", 14);
+    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -69,43 +91,61 @@ public class QRGenerator extends AppCompatActivity {
         // TODO: Translation goes here
 
         boolean online = networkUtils.deviceIsConnectedToInternet();
-        assert(networkUtils.application == getApplication());
         return (online ? getQRLink(allergies) : getQRString(allergies));
     }
 
     @NonNull
     private String getQRLink(@NonNull List<Allergy> allergies)
     {
+        String url = "https://tgatbotr.github.io/index.html";
+
         if (allergies.size() == 0)
         {
-            return "";
+            return url;
         }
 
-        StringBuilder urlArgs = new StringBuilder();
+        String[] theader = new String[] { "Allergy", "Severity", "Symptoms" };
+        String[][] tcontent = new String[allergies.size()][4];
 
+        for (int i = 0; i < allergies.size(); i++)
+        {
+            Allergy allergy = allergies.get(i);
+            String allergyNameLower = allergy.name.toLowerCase();
+
+            tcontent[i][0] = String.valueOf(allergyIds.containsKey(allergyNameLower) ? allergyIds.get(allergyNameLower) : -1);
+            tcontent[i][1] = allergy.name;
+            tcontent[i][2] = String.valueOf(allergy.scale);
+            tcontent[i][3] = allergy.symptoms;
+        }
+
+        UrlData data = new UrlData();
+        data.tHeader = theader;
+        data.tContent = tcontent;
+
+        String urlDataString = "";
         try
         {
-            for (int i = 0; i < allergies.size(); i++)
-            {
-                urlArgs.append(i == 0 ? '?' : '&').append(String.format("allergy%d=", i));
-                urlArgs.append(URLEncoder.encode(allergies.get(i).name, StandardCharsets.UTF_8.toString()));
-
-                urlArgs.append(String.format("&scale%d=", i));
-                urlArgs.append(allergies.get(i).scale);
-
-                urlArgs.append(String.format("&symptoms%d=", i));
-                urlArgs.append(URLEncoder.encode(allergies.get(i).symptoms, StandardCharsets.UTF_8.toString()));
-            }
+            urlDataString = objectMapper.writeValueAsString(data);
         }
-        catch (UnsupportedEncodingException e)
+        catch (JsonProcessingException e)
         {
             e.printStackTrace();
         }
 
+        // Should be safe as project requires API v26 anyway
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            urlDataString = Base64.getUrlEncoder().encodeToString(urlDataString.getBytes());
+        }
+        else
+        {
+            urlDataString = "";
+        }
+
         try
         {
-            URL hostUrl = new URL("https", "tgatbotr.github.io", "index.html");
-            URL fullUrl = new URL(hostUrl, urlArgs.toString());
+            URL domainUrl = new URL(url);
+            URL fullUrl = new URL(domainUrl, "?data=" + urlDataString);
 
             return fullUrl.toString();
         }
@@ -114,7 +154,7 @@ public class QRGenerator extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return "Nothing to see here...";
+        return url;
     }
 
     @NonNull
@@ -137,5 +177,11 @@ public class QRGenerator extends AppCompatActivity {
         }
 
         return qrString.toString();
+    }
+
+    private class UrlData
+    {
+        public String[] tHeader;
+        public String[][] tContent;
     }
 }
