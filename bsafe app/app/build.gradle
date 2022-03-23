@@ -71,7 +71,9 @@ dependencies {
     implementation platform('com.google.cloud:libraries-bom:24.3.0')
     implementation 'com.google.cloud:google-cloud-storage'
 
-
     // ADD LIBRARY FOR SCROLL SELECTOR
     implementation "com.webianks.library:scroll-choice:1.0.1"
+
+    // Json
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
 }
