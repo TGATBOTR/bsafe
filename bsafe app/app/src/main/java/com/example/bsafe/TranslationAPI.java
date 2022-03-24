@@ -25,8 +25,12 @@ public class TranslationAPI extends AsyncTask<String, String, String> {
     static {
         targetLanguages = new HashMap<>();
         targetLanguages.put("ENGLISH", "en");
+        targetLanguages.put("FRENCH", "fr");
+        targetLanguages.put("GERMAN", "de");
+        targetLanguages.put("GREEK", "el");
         targetLanguages.put("ITALIAN", "it");
         targetLanguages.put("ROMANIAN", "ro");
+        targetLanguages.put("SPANISH", "es");
         targetLanguages.put("WELSH", "cy");
     }
 

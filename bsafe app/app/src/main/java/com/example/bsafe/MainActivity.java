@@ -27,6 +27,7 @@ import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -49,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private List <Allergy> allergies;
     private List <EmergencyContacts> emergencyContacts = new ArrayList<EmergencyContacts>();
     private boolean retrieved = false;
-
 
     private TextView englishAllergyName;
     private int currentAllergy = 0;
@@ -154,8 +154,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
-        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
+        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("QR"));
         ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+        ((Button) findViewById(R.id.button2)).setText(i18n.get("CONTACTS"));
 
         Spinner sp = ((Spinner) findViewById(R.id.spinnerTargetLanguage));
 
@@ -165,9 +166,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         List<String> displayItems = new ArrayList<>();
         int selectedId = 0;
         int counter = 0;
+
         for(String key: TranslationAPI.targetLanguages.keySet()) {
-            String translation = i18n.get(key);
             String value = TranslationAPI.targetLanguages.get(key);
+            String translation = i18n.get(key) + " - " + i18n.get("LANGUAGE", new Locale(value));
             this.langOptions.put(translation, value);
             displayItems.add(translation);
 
@@ -225,7 +227,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         ((TextView) findViewById(R.id.translatedAllergyName)).setText(i18n.get("LOADING"));
 
-        String text = allergies.get(currentAllergy).name;
+        String text;
+
+        try {
+            text = allergies.get(currentAllergy).name;
+        } catch (IndexOutOfBoundsException e) {
+            ((TextView) findViewById(R.id.translatedAllergyName)).setText("");
+            return;
+        }
+
 
 
         TranslationAPI translateTask = new TranslationAPI(this.targetLanguage, text, new OnTaskCompleted() {
