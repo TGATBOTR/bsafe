@@ -154,8 +154,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
-        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
+        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("QR"));
         ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+        ((Button) findViewById(R.id.button2)).setText(i18n.get("CONTACTS"));
 
         Spinner sp = ((Spinner) findViewById(R.id.spinnerTargetLanguage));
 
