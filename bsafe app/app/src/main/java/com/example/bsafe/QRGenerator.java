@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
+import com.example.bsafe.I18n.Localizer;
+import com.example.bsafe.Translation.TranslationAPI;
 import com.example.bsafe.Utils.NetworkUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -28,15 +31,18 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dagger.hilt.android.AndroidEntryPoint;
 
+interface Action
+{
+    void invoke(TranslationAPI translationTask);
+}
+
 @AndroidEntryPoint
 public class QRGenerator extends AppCompatActivity {
 
-    @Inject
-    public Session session;
-    @Inject
-    public AllergyDao allergyDao;
-    @Inject
-    public NetworkUtils networkUtils;
+    @Inject public Session session;
+    @Inject public AllergyDao allergyDao;
+    @Inject public Localizer i18n;
+    @Inject public NetworkUtils networkUtils;
 
     private final int qrCodeSize = 500;
     private final List<Allergy> allergies = new ArrayList<>();
@@ -71,7 +77,51 @@ public class QRGenerator extends AppCompatActivity {
         getAllergiesThread.start();
         try { getAllergiesThread.join(); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        String qrValue = getQRContent(allergies);
+        if (allergies.size() == 0)
+        {
+            displayQR("");
+            return;
+        }
+
+        // TODO: Start loading screen
+
+        TranslationAPI symptomsTaskBase = new TranslationAPI(MainActivity.targetLanguage, allergies.get(0).symptoms, (translation ->
+        {
+            allergies.get(0).symptoms = translation;
+            displayQR(getQRContent(allergies));
+            //TODO: Stop Loading Screen
+        }));
+        TranslationAPI nameTaskBase = new TranslationAPI(MainActivity.targetLanguage, allergies.get(0).name, translation ->
+        {
+            allergies.get(0).name = translation;
+            symptomsTaskBase.execute();
+        });
+
+        TranslationAPI headTask = nameTaskBase;
+        for (int i = 1; i < allergies.size(); i++)
+        {
+            Allergy allergy = allergies.get(i);
+            Action nextTask = (translationTask -> translationTask.execute());
+
+            TranslationAPI finalPreviousTask = headTask;
+            TranslationAPI symptomsTask = new TranslationAPI(MainActivity.targetLanguage, allergy.symptoms, (translation -> {
+                allergy.symptoms = translation;
+                nextTask.invoke(finalPreviousTask);
+            }));
+            TranslationAPI nameTask = new TranslationAPI(MainActivity.targetLanguage, allergy.name, translation ->
+            {
+                allergy.name = translation;
+                symptomsTask.execute();
+            });
+
+            headTask = nameTask;
+        }
+
+        headTask.execute();
+    }
+
+    private void displayQR(String qrValue)
+    {
         QRGEncoder qrgEncoder = new QRGEncoder(qrValue, null, QRGContents.Type.TEXT, qrCodeSize);
 
         Bitmap bitmap = qrgEncoder.getBitmap();
@@ -104,9 +154,15 @@ public class QRGenerator extends AppCompatActivity {
             return url;
         }
 
-        String[] theader = new String[] { "Allergy", "Severity", "Symptoms" };
-        String[][] tcontent = new String[allergies.size()][4];
+        Locale targetLocale = new Locale(MainActivity.targetLanguage);
+        String[] theader = new String[]
+        {
+            i18n.get("ALLERGY", targetLocale),
+            i18n.get("SEVERITY", targetLocale),
+            i18n.get("SYMPTOMS", targetLocale)
+        };
 
+        String[][] tcontent = new String[allergies.size()][4];
         for (int i = 0; i < allergies.size(); i++)
         {
             Allergy allergy = allergies.get(i);
@@ -132,7 +188,7 @@ public class QRGenerator extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Should be safe as project requires API v26 anyway
+        // Should be safe as project requires minimum API version 26 anyway
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             urlDataString = Base64.getUrlEncoder().encodeToString(urlDataString.getBytes());
