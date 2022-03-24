@@ -80,41 +80,43 @@ public class QRGenerator extends AppCompatActivity {
             return;
         }
 
-        // TODO: Start loading screen
+        // TODO: Show loading screen
 
-        TranslationAPI symptomsTaskBase = new TranslationAPI(MainActivity.targetLanguage, allergies.get(0).symptoms, (translation ->
+        TranslationAPI headTask = null;
+        for (Allergy allergy: allergies)
         {
-            allergies.get(0).symptoms = translation;
-            displayQR(getQRContent(allergies));
-            //TODO: Stop Loading Screen
-        }));
-        TranslationAPI nameTaskBase = new TranslationAPI(MainActivity.targetLanguage, allergies.get(0).name, translation ->
-        {
-            allergies.get(0).name = translation;
-            symptomsTaskBase.execute();
-        });
-
-        TranslationAPI headTask = nameTaskBase;
-        for (int i = 1; i < allergies.size(); i++)
-        {
-            Allergy allergy = allergies.get(i);
             Action nextTask = (translationTask -> translationTask.execute());
-
-            TranslationAPI finalPreviousTask = headTask;
-            TranslationAPI symptomsTask = new TranslationAPI(MainActivity.targetLanguage, allergy.symptoms, (translation -> {
-                allergy.symptoms = translation;
-                nextTask.invoke(finalPreviousTask);
-            }));
-            TranslationAPI nameTask = new TranslationAPI(MainActivity.targetLanguage, allergy.name, translation ->
+            headTask = queueAllergyTranslation(headTask, allergy, MainActivity.targetLanguage, (head) ->
             {
-                allergy.name = translation;
-                symptomsTask.execute();
+                if (head == null)
+                {
+                    displayQR(getQRContent(allergies));
+                    // TODO: Hide loading screen
+                }
+                else
+                {
+                    nextTask.invoke(head);
+                }
             });
-
-            headTask = nameTask;
         }
 
         headTask.execute();
+    }
+
+    private TranslationAPI queueAllergyTranslation(TranslationAPI head, Allergy allergy, String targetLanguage, Action onCompleted)
+    {
+        TranslationAPI symptomsTask = new TranslationAPI(targetLanguage, allergy.symptoms, (translation ->
+        {
+            allergy.symptoms = translation;
+            onCompleted.invoke(head);
+        }));
+        TranslationAPI nameTask = new TranslationAPI(targetLanguage, allergy.name, (translation ->
+        {
+            allergy.name = translation;
+            symptomsTask.execute();
+        }));
+
+        return nameTask;
     }
 
     private void displayQR(String qrValue)
