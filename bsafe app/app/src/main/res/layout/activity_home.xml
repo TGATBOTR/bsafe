@@ -39,8 +39,8 @@
             android:layout_height="75dp"
             android:layout_below="@+id/textView3"
             android:layout_marginTop="0dp"
-            android:textColor="@color/white"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dialog"
+            android:textColor="@color/white" />
 
         <TextView
             android:id="@+id/translatedAllergyName"
