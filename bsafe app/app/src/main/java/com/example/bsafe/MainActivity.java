@@ -226,7 +226,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     {
         ((TextView) findViewById(R.id.translatedAllergyName)).setText(i18n.get("LOADING"));
 
-        String text = allergies.get(currentAllergy).name;
+        String text;
+
+        try {
+            text = allergies.get(currentAllergy).name;
+        } catch (IndexOutOfBoundsException e) {
+            ((TextView) findViewById(R.id.translatedAllergyName)).setText("");
+            return;
+        }
+
 
 
         TranslationAPI translateTask = new TranslationAPI(this.targetLanguage, text, new OnTaskCompleted() {
