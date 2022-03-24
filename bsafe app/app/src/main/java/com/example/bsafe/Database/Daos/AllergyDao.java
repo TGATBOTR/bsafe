@@ -16,7 +16,7 @@ public interface AllergyDao {
     @Query("SELECT * FROM allergies")
     List<Allergy> getAll();
 
-    @Query("SELECT * FROM allergies WHERE user_id = :user_id")
+    @Query("SELECT * FROM allergies WHERE user_id = :user_id ORDER BY scale DESC")
     List<Allergy> getUserAllergies(Integer user_id);
 
     @Insert
