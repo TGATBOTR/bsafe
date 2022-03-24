@@ -22,8 +22,10 @@ import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Database.Models.EmergencyContacts;
 import com.example.bsafe.Database.Models.User;
 import com.example.bsafe.I18n.Localizer;
+import com.example.bsafe.QRCodes.QRGenerator;
+import com.example.bsafe.Translation.OnTaskCompleted;
+import com.example.bsafe.Translation.TranslationAPI;
 
-import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -240,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         TranslationAPI translateTask = new TranslationAPI(this.targetLanguage, text, new OnTaskCompleted() {
             @Override
-            void onTaskCompleted(String translation) {
+            public void onTaskCompleted(String translation) {
                 ((TextView) findViewById(R.id.translatedAllergyName)).setText(translation);
             }
         });
@@ -256,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // GO TO ADD QR PAGE
     public void QRpage(View view) {
-        Intent i=new Intent(getBaseContext(),QRGenerator.class);
+        Intent i=new Intent(getBaseContext(), QRGenerator.class);
         startActivity(i);
     }
 

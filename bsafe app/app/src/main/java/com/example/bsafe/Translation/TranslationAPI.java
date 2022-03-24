@@ -1,4 +1,4 @@
-package com.example.bsafe;
+package com.example.bsafe.Translation;
 
 import android.os.AsyncTask;
 
