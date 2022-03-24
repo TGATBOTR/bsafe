@@ -92,7 +92,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         // SET VALUES
         newAllergy.uid = allergy.uid;
         newAllergy.name = allergyName.getText().toString();
-        allergy.scale = (int) allergySeverity.getValue();
+        newAllergy.scale = (int) allergySeverity.getValue();
         newAllergy.attachToUser(session.getUser());
         newAllergy.symptoms = allergySymptoms.getText().toString();
 
