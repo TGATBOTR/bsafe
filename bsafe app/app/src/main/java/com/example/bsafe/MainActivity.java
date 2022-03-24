@@ -1,15 +1,19 @@
 package com.example.bsafe;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private Map<String, String> langOptions;
     public static String targetLanguage;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         MainActivity mainActivity = this;
 
         ((Spinner) findViewById(R.id.spinnerTargetLanguage)).setOnItemSelectedListener(this);
+
+        ConstraintLayout page = findViewById(R.id.page);
+        page.setOnTouchListener(new OnSwipeTouchListener(mainActivity){
+            public void onSwipeTop() {
+                return;
+            }
+            public void onSwipeRight() {
+                shift(1);
+            }
+            public void onSwipeLeft() {
+                shift(-1);
+            }
+            public void onSwipeBottom() {
+                return;
+            }
+        });
     }
 
     @Override
@@ -173,15 +194,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     // MOVE BETWEEN ALLERGIES
     // will change to swipe gesture
-    public void shift( View view){
-        int shift;
-        if (view.getId() == R.id.right){
-            shift = 1;
-        } else {
-            shift = -1;
-        }
+    public void shift(int shiftAmount){
         if (allergies.size() != 0) {
-            currentAllergy += shift;
+            currentAllergy += shiftAmount;
             if (currentAllergy < 0){
                 currentAllergy+=allergies.size();
             }

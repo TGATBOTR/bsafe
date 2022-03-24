@@ -37,7 +37,6 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
     private List<Allergy> allergies;
 
     private LinearLayout layout;
-    private SearchView searchView;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -54,7 +53,8 @@ public class ViewAllergies extends AppCompatActivity implements SearchView.OnQue
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         ((TextView) findViewById(R.id.textView6)).setText("Allergies");
-        searchView = findViewById(R.id.search_bar);
+
+        SearchView searchView = findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
         layout = findViewById(R.id.linearlayout);

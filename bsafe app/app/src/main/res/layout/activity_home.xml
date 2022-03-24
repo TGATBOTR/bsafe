@@ -1,75 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/page">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:cornerRadius="10dp"
+        android:background="@color/bluegreen">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="75dp"
             android:gravity="center"
+            android:textColor="@color/white"
             android:text="English:" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="75dp"
             android:layout_below="@+id/textView2"
+            android:textColor="@color/white"
             android:gravity="center" />
 
         <Spinner
             android:id="@+id/spinnerTargetLanguage"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
+            android:layout_height="75dp"
             android:layout_below="@+id/textView3"
             android:layout_marginTop="0dp"
+            android:textColor="@color/white"
             android:spinnerMode="dialog" />
 
         <TextView
             android:id="@+id/translatedAllergyName"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="75dp"
             android:layout_below="@+id/spinnerTargetLanguage"
             android:layout_marginTop="0dp"
+            android:textColor="@color/white"
             android:gravity="center" />
 
     </RelativeLayout>
-
-    <ImageButton
-        android:id="@+id/right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="shift"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_right" />
-
-    <ImageButton
-        android:id="@+id/left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="shift"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/relativeLayout"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_left" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -88,61 +70,58 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="60dp"
         android:onClick="showAll"
         android:text="Show All"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/qrButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="QRpage"
-        android:text="Generate QR code"
-        app:backgroundTint="@color/teal_200"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/languageButton"
-        android:layout_width="57dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:onClick="changeLanguagePage"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_manage" />
-<!--    android:layout_marginEnd="332dp"-->
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
-        android:id="@+id/editButton"
-        android:layout_width="105dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="96dp"
-        android:onClick="showAll"
-        android:text="Edit"
-        app:backgroundTint="@color/teal_200"
-        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qrButton"
-        app:layout_constraintVertical_bias="1.0" />
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:onClick="showAll"
+            android:text="Edit"
+            app:cornerRadius="0dp"
+            app:backgroundTint="@color/bluegreen"/>
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contacts"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginBottom="40dp"
-        android:onClick="seeContacts"/>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="Contacts"
+            app:cornerRadius="0dp"
+            app:backgroundTint="@color/bluegreen"
+            android:onClick="seeContacts"/>
+
+        <Button
+            android:id="@+id/qrButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:onClick="QRpage"
+            android:text="QR code"
+            app:cornerRadius="0dp"
+            app:backgroundTint="@color/bluegreen" />
+
+        <ImageButton
+            android:id="@+id/languageButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:onClick="changeLanguagePage"
+            app:cornerRadius="0dp"
+            app:srcCompat="@android:drawable/ic_menu_manage" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
