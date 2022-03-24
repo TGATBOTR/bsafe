@@ -158,7 +158,8 @@ public class QRGenerator extends AppCompatActivity {
         {
             i18n.get("ALLERGY", targetLocale),
             i18n.get("SEVERITY", targetLocale),
-            i18n.get("SYMPTOMS", targetLocale)
+            i18n.get("SYMPTOMS", targetLocale),
+            i18n.get("VIEW_ALLERGIES", targetLocale)
         };
 
         String[][] tcontent = new String[allergies.size()][4];
