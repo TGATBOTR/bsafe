@@ -28,7 +28,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class ViewContacts extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
-    private SearchView searchView;
     private LinearLayout layout;
 
     @Inject
@@ -53,7 +52,7 @@ public class ViewContacts extends AppCompatActivity implements SearchView.OnQuer
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         ((TextView) findViewById(R.id.textView6)).setText("Contacts");
-        searchView = findViewById(R.id.search_bar);
+        SearchView searchView = findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(this);
 
         layout = findViewById(R.id.linearlayout);
@@ -95,7 +94,7 @@ public class ViewContacts extends AppCompatActivity implements SearchView.OnQuer
     private void setList(List<EmergencyContacts> emergencyContactsList){
         for (int i = 0; i < emergencyContactsList.size(); i++){
             // ROW
-            AllergyView horizontalLayout = new AllergyView(this, i);
+            LinearLayout horizontalLayout = new LinearLayout(this);
             horizontalLayout.setOrientation(LinearLayout.HORIZONTAL);
             horizontalLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(50)));
 
@@ -122,24 +121,24 @@ public class ViewContacts extends AppCompatActivity implements SearchView.OnQuer
     }
 }
 
-/*
-Custom class to make an array of linearlayouts clickable
- */
-class ContactView extends LinearLayout{
-    int index;
-
-    public ContactView(Context context, int i){
-        super(context);
-        this.index = i;
-        this.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(context,UpdateAllergyActivity.class);
-
-                intent.putExtra("index", index);
-
-                context.startActivity(intent);
-            }
-        });
-    }
-}
+///*
+//Custom class to make an array of linearlayouts clickable
+// */
+//class ContactView extends LinearLayout{
+//    int index;
+//
+//    public ContactView(Context context, int i){
+//        super(context);
+//        this.index = i;
+//        this.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(context,UpdateAllergyActivity.class);
+//
+//                intent.putExtra("index", index);
+//
+//                context.startActivity(intent);
+//            }
+//        });
+//    }
+//}
