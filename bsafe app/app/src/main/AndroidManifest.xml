@@ -13,7 +13,7 @@
         android:theme="@style/Theme.BSafe">
         <activity android:name=".ViewAllergies" />
         <activity android:name=".UpdateAllergyActivity" />
-        <activity android:name=".QRGenerator" />
+        <activity android:name=".QRCodes.QRGenerator" />
         <activity android:name=".ChangeLanguage" />
         <activity android:name=".AddAllergyActivity" />
         <activity android:name=".ViewContacts"/>

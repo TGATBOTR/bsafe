@@ -1,4 +1,4 @@
-package com.example.bsafe;
+package com.example.bsafe.QRCodes;
 
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -12,6 +12,8 @@ import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.I18n.Localizer;
+import com.example.bsafe.MainActivity;
+import com.example.bsafe.R;
 import com.example.bsafe.Translation.TranslationAPI;
 import com.example.bsafe.Utils.NetworkUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,11 +32,6 @@ import javax.inject.Inject;
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import dagger.hilt.android.AndroidEntryPoint;
-
-interface Action
-{
-    void invoke(TranslationAPI translationTask);
-}
 
 @AndroidEntryPoint
 public class QRGenerator extends AppCompatActivity {
