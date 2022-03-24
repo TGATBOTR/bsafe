@@ -74,13 +74,14 @@ public class QRGenerator extends AppCompatActivity {
         getAllergiesThread.start();
         try { getAllergiesThread.join(); } catch (InterruptedException e) { e.printStackTrace(); }
 
-        if (allergies.size() == 0)
-        {
-            displayQR("");
-            return;
-        }
-
         // TODO: Show loading screen
+
+        int[] ids = new int[allergies.size()];
+        for (int i = 0; i < allergies.size(); i++)
+        {
+            String name = allergies.get(i).name.toLowerCase();
+            ids[i] = (allergyIds.containsKey(name) ? allergyIds.get(name) : -1);
+        }
 
         TranslationAPI headTask = null;
         for (Allergy allergy: allergies)
@@ -90,7 +91,7 @@ public class QRGenerator extends AppCompatActivity {
             {
                 if (head == null)
                 {
-                    displayQR(getQRContent(allergies));
+                    displayQR(getQRContent(allergies, ids));
                     // TODO: Hide loading screen
                 }
                 else
@@ -100,10 +101,18 @@ public class QRGenerator extends AppCompatActivity {
             });
         }
 
-        headTask.execute();
+        if (headTask == null)
+        {
+            displayQR("");
+        }
+        else
+        {
+            headTask.execute();
+        }
     }
 
-    private TranslationAPI queueAllergyTranslation(TranslationAPI head, Allergy allergy, String targetLanguage, Action onCompleted)
+    @NonNull
+    private TranslationAPI queueAllergyTranslation(TranslationAPI head, @NonNull Allergy allergy, String targetLanguage, Action onCompleted)
     {
         TranslationAPI symptomsTask = new TranslationAPI(targetLanguage, allergy.symptoms, (translation ->
         {
@@ -135,16 +144,14 @@ public class QRGenerator extends AppCompatActivity {
     }
 
     @NonNull
-    private String getQRContent(@NonNull List<Allergy> allergies)
+    private String getQRContent(@NonNull List<Allergy> allergies, int[] allergyIds)
     {
-        // TODO: Translation goes here
-
         boolean online = networkUtils.deviceIsConnectedToInternet();
-        return (online ? getQRLink(allergies) : getQRString(allergies));
+        return (online && allergyIds != null ? getQRLink(allergies, allergyIds) : getQRString(allergies));
     }
 
     @NonNull
-    private String getQRLink(@NonNull List<Allergy> allergies)
+    private String getQRLink(@NonNull List<Allergy> allergies, @NonNull int[] allergyIds)
     {
         String url = "https://tgatbotr.github.io/index.html";
 
@@ -165,9 +172,7 @@ public class QRGenerator extends AppCompatActivity {
         for (int i = 0; i < allergies.size(); i++)
         {
             Allergy allergy = allergies.get(i);
-            String allergyNameLower = allergy.name.toLowerCase();
-
-            tcontent[i][0] = String.valueOf(allergyIds.containsKey(allergyNameLower) ? allergyIds.get(allergyNameLower) : -1);
+            tcontent[i][0] = String.valueOf(allergyIds[i]);
             tcontent[i][1] = allergy.name;
             tcontent[i][2] = String.valueOf(allergy.scale);
             tcontent[i][3] = allergy.symptoms;
