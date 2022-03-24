@@ -24,15 +24,22 @@ public class LocalisationTests
         Localizer englishLocalizer = new Localizer(context.englishLocale);
         for (Locale locale: context.supportedLocales)
         {
-            System.out.println(locale.getCountry());
             if (locale != context.englishLocale)
             {
                 Localizer localizer = new Localizer(locale);
                 for (String key: context.MessagesKeys)
                 {
-                    if (!context.isWordIgnored(key, locale) && englishLocalizer.get(key).equals(localizer.get(key)))
+                    if (context.isWordIgnored(key, locale))
+                        continue;
+
+                    if (englishLocalizer.get(key).equals(localizer.get(key)))
                     {
                         context.logDuplicateText(englishLocalizer.getLocale(), locale, key);
+                        success = false;
+                    }
+                    else if (localizer.get(key).equals(""))
+                    {
+                        context.logMissingText(englishLocalizer.getLocale(), locale, key);
                         success = false;
                     }
                 }
@@ -110,6 +117,11 @@ public class LocalisationTests
         public void logDuplicateText(Locale locale1, Locale locale2, String key)
         {
             System.err.printf("Duplicate text between locales '%s' and '%s' for '%s'%n", locale1.getLanguage(), locale2.getLanguage(), key);
+        }
+
+        public void logMissingText(Locale locale, Locale locale2, String key)
+        {
+            System.err.printf("Text found in '%s' is missing in locale '%s' for '%s'%n", locale.getLanguage(), locale2.getLanguage(), key);
         }
 
         public boolean isWordIgnored(String key, Locale... locales)
