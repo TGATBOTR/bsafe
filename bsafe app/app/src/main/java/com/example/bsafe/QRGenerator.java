@@ -29,7 +29,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class QRGenerator extends AppCompatActivity {
+public class QRGenerator extends Navigation {
 
     @Inject
     public Session session;

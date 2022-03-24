@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ViewAllergies extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class ViewAllergies extends Navigation implements SearchView.OnQueryTextListener{
 
     @Inject
     public Session session;

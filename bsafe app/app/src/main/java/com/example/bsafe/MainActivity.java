@@ -35,7 +35,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends Navigation implements AdapterView.OnItemSelectedListener {
 
     @Inject
     public Session session;
@@ -251,31 +251,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     // GO TO ADD ALLERGY PAGE
     public void addAllergy(View view) {
         Intent i=new Intent(getBaseContext(),AddAllergyActivity.class);
-        startActivity(i);
-    }
-
-    // GO TO ADD QR PAGE
-    public void QRpage(View view) {
-        Intent i=new Intent(getBaseContext(),QRGenerator.class);
-        startActivity(i);
-    }
-
-    //GO TO VIEW ALL ALLERGIES PAGE
-    public void showAll(View view) {
-        Intent i=new Intent(getBaseContext(),ViewAllergies.class);
-        startActivity(i);
-    }
-
-    // GO TO CHANGE LANGUAGE PAGE
-    public void changeLanguagePage(View view) {
-        Intent intent = new Intent(getBaseContext(), ChangeLanguage.class);
-        //finish();
-        startActivity(intent);
-
-    }
-
-    public void seeContacts(View view) {
-        Intent i=new Intent(getBaseContext(),ViewContacts.class);
         startActivity(i);
     }
 }

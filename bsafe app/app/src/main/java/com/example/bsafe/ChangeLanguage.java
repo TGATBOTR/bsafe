@@ -29,7 +29,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class ChangeLanguage extends AppCompatActivity {
+public class ChangeLanguage extends Navigation {
     String language;
     ScrollChoice scrollChoice;
     TextView textView;

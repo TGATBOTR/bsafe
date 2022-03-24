@@ -6,13 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ViewAllergies">
 
+    <include
+        android:id="@+id/include3"
+        layout="@layout/navigation"
+        tools:layout_editor_absoluteY="682dp" />
+
     <LinearLayout
         android:id="@+id/pagelinearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" >
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
 
         <TextView
             android:id="@+id/textView6"
@@ -32,8 +37,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/include"
             tools:layout_editor_absoluteX="1dp"
-            tools:layout_editor_absoluteY="1dp" >
+            tools:layout_editor_absoluteY="1dp">
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
