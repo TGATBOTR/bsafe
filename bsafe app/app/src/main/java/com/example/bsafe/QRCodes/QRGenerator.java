@@ -13,6 +13,7 @@ import com.example.bsafe.Database.Daos.AllergyDao;
 import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.I18n.Localizer;
 import com.example.bsafe.MainActivity;
+import com.example.bsafe.Navigation;
 import com.example.bsafe.R;
 import com.example.bsafe.Translation.TranslationAPI;
 import com.example.bsafe.Utils.NetworkUtils;
@@ -34,7 +35,7 @@ import androidmads.library.qrgenearator.QRGEncoder;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class QRGenerator extends AppCompatActivity {
+public class QRGenerator extends Navigation {
 
     @Inject public Session session;
     @Inject public AllergyDao allergyDao;

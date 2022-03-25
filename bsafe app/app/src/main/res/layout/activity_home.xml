@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:id="@+id/page">
 
+    <include layout="@layout/navigation" />
+
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="300dp"
@@ -70,58 +72,11 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="80dp"
         android:onClick="showAll"
         android:text="Show All"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <Button
-            android:id="@+id/editButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:onClick="showAll"
-            android:text="Edit"
-            app:cornerRadius="0dp"
-            app:backgroundTint="@color/bluegreen"/>
-
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:text="Contacts"
-            app:cornerRadius="0dp"
-            app:backgroundTint="@color/bluegreen"
-            android:onClick="seeContacts"/>
-
-        <Button
-            android:id="@+id/qrButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:onClick="QRpage"
-            android:text="QR code"
-            app:cornerRadius="0dp"
-            app:backgroundTint="@color/bluegreen" />
-
-        <ImageButton
-            android:id="@+id/languageButton"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:onClick="changeLanguagePage"
-            app:cornerRadius="0dp"
-            app:srcCompat="@android:drawable/ic_menu_manage" />
-
-    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
