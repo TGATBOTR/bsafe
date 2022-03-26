@@ -17,6 +17,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.EmergencyContactsDao;
 import com.example.bsafe.Database.Models.EmergencyContacts;
+import com.example.bsafe.I18n.Localizer;
+import com.example.bsafe.Translation.OnTaskCompleted;
+import com.example.bsafe.Translation.TranslationAPI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,8 @@ public class ViewContacts extends Navigation implements SearchView.OnQueryTextLi
     public Session session;
     @Inject
     public EmergencyContactsDao emergencyContactsDao;
+    @Inject
+    public Localizer i18n;
 
     private List<EmergencyContacts> emergencyContacts;
 
@@ -57,7 +62,12 @@ public class ViewContacts extends Navigation implements SearchView.OnQueryTextLi
 
         layout = findViewById(R.id.linearlayout);
         setList(emergencyContacts);
+    }
 
+    protected void onResume() {
+        super.onResume();
+        layout.removeAllViews();
+        setList(emergencyContacts);
     }
 
 
@@ -102,7 +112,17 @@ public class ViewContacts extends Navigation implements SearchView.OnQueryTextLi
 
             //Country
             TextView country = new TextView(this);
-            country.setText(emergencyContactsList.get(i).name);
+
+            TranslationAPI translateTask = new TranslationAPI(i18n.getLocale().toString(), emergencyContactsList.get(i).name, new OnTaskCompleted() {
+                @Override
+                public void onTaskCompleted(String translation) {
+                    country.setText(translation);
+                }
+            });
+
+            translateTask.execute();
+
+
             country.setTextSize(20);
             country.setLayoutParams(params);
             country.setGravity(Gravity.CENTER);
