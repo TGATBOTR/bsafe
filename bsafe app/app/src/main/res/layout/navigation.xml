@@ -6,52 +6,54 @@
     android:orientation="horizontal"
     app:layout_constraintBottom_toBottomOf="parent">
 
-    <Button
+    <ImageButton
         android:id="@+id/editButton"
+        app:srcCompat="@drawable/edit"
+        android:onClick="showAll"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:text="Edit"
         app:cornerRadius="0dp"
-        app:backgroundTint="@color/bluegreen"
-        android:onClick="showAll"/>
+        android:background="@color/bluegreen">
+    </ImageButton>
 
-    <Button
+    <ImageButton
         android:id="@+id/button2"
+        android:onClick="seeContacts"
+        app:srcCompat="@drawable/contacts"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:text="Contacts"
         app:cornerRadius="0dp"
-        app:backgroundTint="@color/bluegreen"
-        android:onClick="seeContacts"/>
+        android:background="@color/bluegreen"/>
 
-    <Button
+    <ImageButton
+        android:onClick="home"
         android:layout_width="0dp"
-        android:layout_weight="1"
+        app:srcCompat="@drawable/home"
         android:layout_height="match_parent"
-        android:text="Home"
+        android:layout_weight="1"
         app:cornerRadius="0dp"
-        app:backgroundTint="@color/bluegreen"
-        android:onClick="home"/>
+        android:background="@color/bluegreen"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/qrButton"
+        android:onClick="QRpage"
+        app:srcCompat="@drawable/qr"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
-        android:text="QR code"
         app:cornerRadius="0dp"
-        app:backgroundTint="@color/bluegreen"
-        android:onClick="QRpage"/>
+        android:background="@color/bluegreen"/>
 
     <ImageButton
         android:id="@+id/languageButton"
+        android:onClick="changeLanguagePage"
+        app:srcCompat="@drawable/language"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         app:cornerRadius="0dp"
-        app:srcCompat="@android:drawable/ic_menu_manage"
-        android:onClick="changeLanguagePage"/>
+        android:background="@color/bluegreen"/>
 
 </LinearLayout>

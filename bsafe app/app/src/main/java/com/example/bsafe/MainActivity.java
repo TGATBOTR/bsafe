@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -156,9 +157,9 @@ public class MainActivity extends Navigation implements AdapterView.OnItemSelect
         ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
-        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("QR"));
-        ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
-        ((Button) findViewById(R.id.button2)).setText(i18n.get("CONTACTS"));
+//        ((ImageButton) findViewById(R.id.qrButton)).setText(i18n.get("QR"));
+//        ((ImageButton) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+//        ((ImageButton) findViewById(R.id.button2)).setText(i18n.get("CONTACTS"));
 
         Spinner sp = ((Spinner) findViewById(R.id.spinnerTargetLanguage));
 

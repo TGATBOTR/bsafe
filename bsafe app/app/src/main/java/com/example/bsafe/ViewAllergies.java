@@ -106,7 +106,7 @@ public class ViewAllergies extends Navigation implements SearchView.OnQueryTextL
             //ENGLISH TEXT
             // TODO: CHANGE AFTER TRANSLATE API. getNativeLanguage() METHOD
             TextView english = new TextView(this);
-            english.setText(allergies.get(i).name);
+            english.setText(allergyList.get(i).name);
             english.setTextSize(20);
             english.setLayoutParams(params);
             english.setGravity(Gravity.CENTER);
@@ -114,7 +114,7 @@ public class ViewAllergies extends Navigation implements SearchView.OnQueryTextL
 
             //TRANSLATED TEXT
             TextView translate = new TextView(this);
-            TranslationAPI translateTask = new TranslationAPI(MainActivity.targetLanguage, allergies.get(i).name, new OnTaskCompleted() {
+            TranslationAPI translateTask = new TranslationAPI(MainActivity.targetLanguage, allergyList.get(i).name, new OnTaskCompleted() {
                 @Override
                 public void onTaskCompleted(String translation) {
                     translate.setText(translation);
