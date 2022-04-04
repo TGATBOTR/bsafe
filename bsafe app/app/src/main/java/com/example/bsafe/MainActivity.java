@@ -1,12 +1,20 @@
 package com.example.bsafe;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.GestureDetector;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.bsafe.Auth.Session;
 import com.example.bsafe.Database.Daos.AllergyDao;
@@ -15,17 +23,22 @@ import com.example.bsafe.Database.Models.Allergy;
 import com.example.bsafe.Database.Models.EmergencyContacts;
 import com.example.bsafe.Database.Models.User;
 import com.example.bsafe.I18n.Localizer;
+import com.example.bsafe.QRCodes.QRGenerator;
+import com.example.bsafe.Translation.OnTaskCompleted;
+import com.example.bsafe.Translation.TranslationAPI;
 
-import java.security.UnrecoverableKeyException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Navigation implements AdapterView.OnItemSelectedListener {
 
     @Inject
     public Session session;
@@ -41,10 +54,13 @@ public class MainActivity extends AppCompatActivity {
     private List <EmergencyContacts> emergencyContacts = new ArrayList<EmergencyContacts>();
     private boolean retrieved = false;
 
-
     private TextView englishAllergyName;
     private int currentAllergy = 0;
 
+    private Map<String, String> langOptions;
+    public static String targetLanguage;
+
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +115,36 @@ public class MainActivity extends AppCompatActivity {
         try { t.join(); } catch (InterruptedException e){ e.printStackTrace(); }
 
         setAllergyText();
+
+        MainActivity mainActivity = this;
+
+        ((Spinner) findViewById(R.id.spinnerTargetLanguage)).setOnItemSelectedListener(this);
+
+        ConstraintLayout page = findViewById(R.id.page);
+        page.setOnTouchListener(new OnSwipeTouchListener(mainActivity){
+            public void onSwipeTop() {
+                return;
+            }
+            public void onSwipeRight() {
+                shift(1);
+            }
+            public void onSwipeLeft() {
+                shift(-1);
+            }
+            public void onSwipeBottom() {
+                return;
+            }
+        });
     }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String text = parent.getItemAtPosition(position).toString();
+        this.targetLanguage = this.langOptions.get(text);
+        translateAllergy();
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) { }
 
     @Override
     protected void onResume() {
@@ -110,24 +155,53 @@ public class MainActivity extends AppCompatActivity {
     public void updateLocalisation()
     {
         ((TextView) findViewById(R.id.textView2)).setText(i18n.get("LANGUAGE") + ":");
-        ((TextView) findViewById(R.id.textView4)).setText(i18n.get("FRENCH") + ":");
 
         ((Button) findViewById(R.id.button)).setText(i18n.get("SHOW_ALL"));
-        ((Button) findViewById(R.id.qrButton)).setText(i18n.get("GENERATE_QR"));
-        ((Button) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+//        ((ImageButton) findViewById(R.id.qrButton)).setText(i18n.get("QR"));
+//        ((ImageButton) findViewById(R.id.editButton)).setText(i18n.get("EDIT"));
+//        ((ImageButton) findViewById(R.id.button2)).setText(i18n.get("CONTACTS"));
+
+        Spinner sp = ((Spinner) findViewById(R.id.spinnerTargetLanguage));
+
+        this.langOptions = new HashMap<>();
+
+        // Create hash map with translated display names for languages
+        List<String> displayItems = new ArrayList<>();
+        int selectedId = 0;
+        int counter = 0;
+
+        for(String key: TranslationAPI.targetLanguages.keySet()) {
+            String value = TranslationAPI.targetLanguages.get(key);
+            String translation = i18n.get(key) + " - " + i18n.get("LANGUAGE", new Locale(value));
+            this.langOptions.put(translation, value);
+            displayItems.add(translation);
+
+            if(this.targetLanguage != null) {
+                if(this.targetLanguage.equals(value)) {
+                    selectedId = counter;
+                }
+            }
+
+            counter += 1;
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, displayItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sp.setAdapter(adapter);
+
+        if(this.targetLanguage == null) {
+            sp.setSelection(0);
+        } else {
+            sp.setSelection(selectedId);
+        }
+
     }
 
     // MOVE BETWEEN ALLERGIES
     // will change to swipe gesture
-    public void shift( View view){
-        int shift;
-        if (view.getId() == R.id.right){
-            shift = 1;
-        } else {
-            shift = -1;
-        }
+    public void shift(int shiftAmount){
         if (allergies.size() != 0) {
-            currentAllergy += shift;
+            currentAllergy += shiftAmount;
             if (currentAllergy < 0){
                 currentAllergy+=allergies.size();
             }
@@ -145,10 +219,36 @@ public class MainActivity extends AppCompatActivity {
         String text;
         if(allergies.size() != 0){
             text = allergies.get(currentAllergy).name;
+            translateAllergy();
         } else {
             text = "ADD AN ALLERGY!";
         }
         englishAllergyName.setText(text);
+    }
+
+    private void translateAllergy()
+    {
+        ((TextView) findViewById(R.id.translatedAllergyName)).setText(i18n.get("LOADING"));
+
+        String text;
+
+        try {
+            text = allergies.get(currentAllergy).name;
+        } catch (IndexOutOfBoundsException e) {
+            ((TextView) findViewById(R.id.translatedAllergyName)).setText("");
+            return;
+        }
+
+
+
+        TranslationAPI translateTask = new TranslationAPI(this.targetLanguage, text, new OnTaskCompleted() {
+            @Override
+            public void onTaskCompleted(String translation) {
+                ((TextView) findViewById(R.id.translatedAllergyName)).setText(translation);
+            }
+        });
+
+        translateTask.execute();
     }
 
     // GO TO ADD ALLERGY PAGE
@@ -156,25 +256,4 @@ public class MainActivity extends AppCompatActivity {
         Intent i=new Intent(getBaseContext(),AddAllergyActivity.class);
         startActivity(i);
     }
-
-    // GO TO ADD QR PAGE
-    public void QRpage(View view) {
-        Intent i=new Intent(getBaseContext(),QRGenerator.class);
-        startActivity(i);
-    }
-
-    //GO TO VIEW ALL ALLERGIES PAGE
-    public void showAll(View view) {
-        Intent i=new Intent(getBaseContext(),ViewAllergies.class);
-        startActivity(i);
-    }
-
-    // GO TO CHANGE LANGUAGE PAGE
-    public void changeLanguagePage(View view) {
-        Intent intent = new Intent(getBaseContext(), ChangeLanguage.class);
-        //finish();
-        startActivity(intent);
-
-    }
-
 }

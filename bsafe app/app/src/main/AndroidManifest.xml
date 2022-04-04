@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.bsafe">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:name=".BSafeApplication"
         android:allowBackup="true"
@@ -12,9 +13,10 @@
         android:theme="@style/Theme.BSafe">
         <activity android:name=".ViewAllergies" />
         <activity android:name=".UpdateAllergyActivity" />
-        <activity android:name=".QRGenerator" />
+        <activity android:name=".QRCodes.QRGenerator" />
         <activity android:name=".ChangeLanguage" />
         <activity android:name=".AddAllergyActivity" />
+        <activity android:name=".ViewContacts"/>
         <activity android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -25,5 +27,8 @@
         </activity>
         <activity android:name=".MainActivity" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
 </manifest>

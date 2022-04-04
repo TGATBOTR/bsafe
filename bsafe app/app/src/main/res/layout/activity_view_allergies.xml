@@ -6,13 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ViewAllergies">
 
+    <include
+        android:id="@+id/include3"
+        layout="@layout/navigation"
+        tools:layout_editor_absoluteY="682dp" />
+
     <LinearLayout
-        android:id="@+id/linearlayout"
+        android:id="@+id/pagelinearlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" >
+        app:layout_constraintBottom_toTopOf="parent"
+        tools:layout_editor_absoluteX="1dp">
 
         <TextView
             android:id="@+id/textView6"
@@ -21,5 +26,20 @@
             android:text="     Tap allergy to edit"
             android:textSize="22dp"
             android:textStyle="bold" />
+
+        <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="31dp" />
+
+        <LinearLayout
+            android:id="@+id/linearlayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/include"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="1dp">
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

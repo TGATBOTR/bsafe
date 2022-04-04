@@ -32,6 +32,8 @@ public class UpdateAllergyActivity extends AppCompatActivity {
     @Inject
     public Localizer i18n;
 
+    int index;
+
     private Allergy allergy;
 
     private TextView allergyName;
@@ -48,13 +50,13 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         allergySeverity = findViewById(R.id.allergySeverity);
         allergySymptoms = findViewById(R.id.allergySymptoms);
 
-        int index = getIntent().getIntExtra("index", -1);
+        index = getIntent().getIntExtra("index", -1);
 
         if (index != -1){
             Thread t = new Thread() {
                 public void run() {
                     List<Allergy> allergies = allergyDao.getUserAllergies(session.getUser().uid);
-                    allergy = allergies.get(index);
+                    setAllergy(allergies.get(index));
                 }
             };
             t.start();
@@ -62,9 +64,15 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         }
 
         allergyName.setText(allergy.name);
-        allergySeverity.setValue(allergy.scale);
+        if (allergy.scale != null) {
+            allergySeverity.setValue(allergy.scale);
+        }
         allergySymptoms.setText(allergy.symptoms);
 
+    }
+
+    private synchronized void setAllergy(Allergy allergy){
+        this.allergy = allergy;
     }
 
     @Override
@@ -92,7 +100,7 @@ public class UpdateAllergyActivity extends AppCompatActivity {
         // SET VALUES
         newAllergy.uid = allergy.uid;
         newAllergy.name = allergyName.getText().toString();
-        allergy.scale = (int) allergySeverity.getValue();
+        newAllergy.scale = (int) allergySeverity.getValue();
         newAllergy.attachToUser(session.getUser());
         newAllergy.symptoms = allergySymptoms.getText().toString();
 
