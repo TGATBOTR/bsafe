@@ -1,6 +1,12 @@
 name: Android CI
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
 
 jobs:
   instrumented_tests:
@@ -21,12 +27,6 @@ jobs:
         uses: actions/setup-java@v1.4.3
         with:
           java-version: 11
-
-      - name: ls
-        run: ls
-
-      # - name: Setup Gradle
-      #   uses: gradle/gradle-build-action@v2
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
